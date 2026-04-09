@@ -1,0 +1,68 @@
+// Base URL can point to relative path because Vite Proxy is setup to redirect /api
+const BASE_URL = '/api';
+
+interface FetchOptions extends RequestInit {
+  data?: any;
+}
+
+class ApiService {
+  private async request<T>(endpoint: string, options: FetchOptions = {}): Promise<T> {
+    const url = `${BASE_URL}${endpoint}`;
+    
+    // Config headers
+    const headers = new Headers(options.headers || {});
+    
+    // Auto-attach JSON format if not specified
+    if (!headers.has('Content-Type') && !(options.data instanceof FormData)) {
+      headers.set('Content-Type', 'application/json');
+    }
+
+    // Auto-attach auth token
+    const token = localStorage.getItem('token');
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`);
+    }
+
+    const config: RequestInit = {
+      ...options,
+      headers,
+    };
+
+    if (options.data) {
+      config.body = options.data instanceof FormData ? options.data : JSON.stringify(options.data);
+    }
+
+    try {
+      const response = await fetch(url, config);
+      const isJson = response.headers.get('content-type')?.includes('application/json');
+      const data = isJson ? await response.json() : await response.text();
+
+      if (!response.ok) {
+        throw new Error((data && data.message) || response.statusText);
+      }
+
+      return data as T;
+    } catch (error: any) {
+      console.error('API Error:', error);
+      throw error;
+    }
+  }
+
+  get<T>(endpoint: string, options?: FetchOptions) {
+    return this.request<T>(endpoint, { ...options, method: 'GET' });
+  }
+
+  post<T>(endpoint: string, data?: any, options?: FetchOptions) {
+    return this.request<T>(endpoint, { ...options, method: 'POST', data });
+  }
+
+  put<T>(endpoint: string, data?: any, options?: FetchOptions) {
+    return this.request<T>(endpoint, { ...options, method: 'PUT', data });
+  }
+
+  delete<T>(endpoint: string, options?: FetchOptions) {
+    return this.request<T>(endpoint, { ...options, method: 'DELETE' });
+  }
+}
+
+export const api = new ApiService();
