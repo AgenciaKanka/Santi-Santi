@@ -26,7 +26,45 @@ jobs:
       - name: 🔨 Build do projeto
         run: npm run build
 
-      - name: 🚀 Deploy via FTP para cPanel
+      - name: 📝 Criar e preparar .htaccess
+        run: |
+          mkdir deploy_htaccess
+          cat << 'EOF' > deploy_htaccess/.htaccess
+          <IfModule mod_rewrite.c>
+              RewriteEngine On
+                  RewriteBase /templateKanka/
+
+              # 1. Requisições da API vão para o Node.js
+              RewriteRule ^api/(.*)$ http://127.0.0.1:3001/api/$1 [P,L]
+
+              # 2. Requisições de uploads vão para o Node.js
+              RewriteRule ^uploads/(.*)$ http://127.0.0.1:3001/uploads/$1 [P,L]
+
+              # 3. Impede loop infinito
+              RewriteCond %{ENV:REDIRECT_STATUS} 200
+              RewriteRule ^ - [L]
+
+              # 4. Requisições de arquivos REAIS dentro do dist/ passam direto
+              RewriteCond %{DOCUMENT_ROOT}/templateKanka/dist/$1 -f [OR]
+              RewriteCond %{DOCUMENT_ROOT}/templateKanka/dist/$1 -d
+              RewriteRule ^(.*)$ dist/$1 [L]
+
+              # 5. Fallback para o index.html gerado pelo React (dentro do dist/)
+              RewriteRule ^(.*)$ dist/index.html [L]
+          </IfModule>
+          EOF
+
+      - name: 🚀 Deploy .htaccess via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftp.sitecgdw.com
+          username: sitecgdw
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./deploy_htaccess/
+          server-dir: /public_html/templateKanka/
+          dangerous-clean-slate: false
+
+      - name: 🚀 Deploy Frontend via FTP para cPanel
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ftp.sitecgdw.com
