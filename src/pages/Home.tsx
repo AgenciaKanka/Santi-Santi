@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { LayoutTemplate, Rocket, Code2, Sparkles, ChevronRight } from 'lucide-react';
+import { LayoutTemplate, Sparkles, ChevronRight } from 'lucide-react';
 
 const Home = () => {
   return (
