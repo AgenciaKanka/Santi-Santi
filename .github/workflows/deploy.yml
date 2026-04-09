@@ -63,8 +63,8 @@ jobs:
       - name: 🚀 Deploy .htaccess via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ftp.sitecgdw.com
-          username: sitecgdw
+          server: ftp.ambienteprovisorio.com.br
+          username: ambienteprovisor
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./deploy_htaccess/
           server-dir: /public_html${{ env.APP_PATH }}/
@@ -73,8 +73,8 @@ jobs:
       - name: 🚀 Deploy Frontend via FTP para cPanel
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ftp.sitecgdw.com
-          username: sitecgdw
+          server: ftp.ambienteprovisorio.com.br
+          username: ambienteprovisor
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: /public_html${{ env.APP_PATH }}/dist/  
