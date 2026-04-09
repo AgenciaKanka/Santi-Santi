@@ -1,4 +1,4 @@
-name: Deploy to cPanel via FTP
+name: 🚀 Deploy MetalFire → cPanel
 
 on:
   push:
@@ -7,27 +7,35 @@ on:
 
 jobs:
   build-and-deploy:
+    name: Build & Deploy Frontend
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: 📥 Checkout código
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: ⚙️ Setup Node.js 20
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
+          cache: 'npm'
 
-      - name: Install dependencies and build
-        run: |
-          npm ci
-          npm run build
+      - name: 📦 Instalar dependências
+        run: npm install
 
-      - name: Sync files via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      - name: 🔨 Build do projeto
+        run: npm run build
+
+      - name: 🚀 Deploy via FTP para cPanel
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
+          server: ftp.sitecgdw.com
+          username: sitecgdw
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: /public_html/
+          server-dir: /public_html/templateKanka/dist/  
+          dangerous-clean-slate: true
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
