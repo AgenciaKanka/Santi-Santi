@@ -21,7 +21,7 @@ const Dashboard = () => {
             Painel
           </h2>
         </div>
-        
+
         <nav className="flex-1 p-4 space-y-2">
           <a href="#" className="flex items-center gap-3 bg-blue-600/20 text-blue-400 px-4 py-3 rounded-lg transition-colors border-l-2 border-primary">
             <LayoutDashboard size={20} />
@@ -38,7 +38,7 @@ const Dashboard = () => {
         </nav>
 
         <div className="p-4 border-t border-gray-800">
-          <button 
+          <button
             onClick={handleLogout}
             className="w-full flex items-center justify-center gap-2 bg-gray-800 hover:bg-red-500/10 hover:text-red-400 text-gray-300 py-3 rounded-lg transition-all"
           >
@@ -53,7 +53,7 @@ const Dashboard = () => {
         {/* Header */}
         <header className="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-8 z-10 shrink-0 shadow-sm">
           <h1 className="text-xl font-semibold text-gray-800">Visão Geral</h1>
-          
+
           <div className="flex items-center gap-6">
             <button className="text-gray-400 hover:text-primary transition-colors relative">
               <Bell size={20} />
@@ -77,7 +77,7 @@ const Dashboard = () => {
 
         {/* Content Area */}
         <div className="flex-1 p-8 overflow-y-auto">
-          
+
           {/* Welcome Banner */}
           <div className="bg-white rounded-2xl p-8 mb-8 shadow-sm border border-gray-100 flex items-center justify-between relative overflow-hidden">
             <div className="relative z-10">
@@ -97,9 +97,9 @@ const Dashboard = () => {
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {[
-               { title: 'Total de Usuários', value: '1', percent: '+10%' },
-               { title: 'Acessos Hoje', value: '14', percent: '+2%' },
-               { title: 'Conversões', value: '3.4%', percent: '-1%' },
+              { title: 'Total de Usuários', value: '1', percent: '+10%' },
+              { title: 'Acessos Hoje', value: '14', percent: '+2%' },
+              { title: 'Conversões', value: '3.4%', percent: '-1%' },
             ].map((stat, i) => (
               <div key={i} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                 <h3 className="text-gray-500 text-sm font-medium mb-1">{stat.title}</h3>
