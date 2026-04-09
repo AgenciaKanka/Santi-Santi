@@ -53,7 +53,7 @@ jobs:
               RewriteRule ^(.*)$ dist/index.html [L]
           </IfModule>
           EOF
-
+ 
       - name: 🚀 Deploy .htaccess via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
