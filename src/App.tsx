@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
+import WineDetail from './pages/WineDetail';
 import Login from './pages/Login';
 import Dashboard from './admin/Dashboard';
 import PrivateRoute from './components/PrivateRoute';
@@ -9,6 +10,7 @@ function App() {
     <Routes>
       {/* Public Routes */}
       <Route path="/" element={<Home />} />
+      <Route path="/vinho/:slug" element={<WineDetail />} />
       <Route path="/login" element={<Login />} />
       
       {/* Protected Admin Routes */}

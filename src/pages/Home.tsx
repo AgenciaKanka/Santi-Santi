@@ -1,196 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FILTERS, WINES } from '../data/wines';
 import './santi-home.css';
-
-type Product = {
-  id: string;
-  name: string;
-  varietal: string;
-  cats: string[];
-  tag: string;
-  star: boolean;
-  rows: [string, string][];
-};
-
-const FILTERS = [
-  { id: 'todos', label: 'Todos' },
-  { id: 'tinto', label: 'Tintos' },
-  { id: 'branco', label: 'Brancos' },
-  { id: 'rose', label: 'Rosés' },
-  { id: 'blend', label: 'Blends' },
-  { id: 'reserva', label: 'Reserva' },
-] as const;
-
-const PRODUCTS: Product[] = [
-  {
-    id: '1',
-    name: 'Pero Branco',
-    varietal: 'Branco',
-    cats: ['branco'],
-    tag: 'Branco',
-    star: false,
-    rows: [
-      ['Região', 'Mendoza'],
-      ['Linha', 'PeRo'],
-      ['Origem', 'Argentina'],
-    ],
-  },
-  {
-    id: '2',
-    name: 'Pero Rosé',
-    varietal: 'Rosé',
-    cats: ['rose'],
-    tag: 'Rosé',
-    star: false,
-    rows: [
-      ['Região', 'Mendoza'],
-      ['Linha', 'PeRo'],
-      ['Origem', 'Argentina'],
-    ],
-  },
-  {
-    id: '3',
-    name: 'Malbec',
-    varietal: 'Tinto',
-    cats: ['tinto'],
-    tag: 'Tinto',
-    star: false,
-    rows: [
-      ['Região', 'Luján de Cuyo'],
-      ['Linha', 'PeRo'],
-      ['Origem', 'Argentina'],
-    ],
-  },
-  {
-    id: '4',
-    name: 'Cabernet Sauvignon',
-    varietal: 'Tinto',
-    cats: ['tinto'],
-    tag: 'Tinto',
-    star: false,
-    rows: [
-      ['Região', 'Valle de Uco'],
-      ['Linha', 'PeRo'],
-      ['Origem', 'Argentina'],
-    ],
-  },
-  {
-    id: '5',
-    name: 'Malbec Reserva',
-    varietal: 'Tinto · Reserva',
-    cats: ['tinto', 'reserva'],
-    tag: 'Reserva',
-    star: true,
-    rows: [
-      ['Região', 'Alto Valle'],
-      ['Linha', 'PeRo'],
-      ['Origem', 'Argentina'],
-    ],
-  },
-  {
-    id: '6',
-    name: 'Cabernet Franc Reserva',
-    varietal: 'Tinto · Reserva',
-    cats: ['tinto', 'reserva'],
-    tag: 'Reserva',
-    star: true,
-    rows: [
-      ['Região', 'Mendoza'],
-      ['Linha', 'PeRo'],
-      ['Origem', 'Argentina'],
-    ],
-  },
-  {
-    id: '7',
-    name: 'Cabernet Sauvignon Reserva',
-    varietal: 'Tinto · Reserva',
-    cats: ['tinto', 'reserva'],
-    tag: 'Reserva',
-    star: true,
-    rows: [
-      ['Região', 'Valle de Uco'],
-      ['Linha', 'PeRo'],
-      ['Origem', 'Argentina'],
-    ],
-  },
-  {
-    id: '8',
-    name: 'Chardonnay Reserva',
-    varietal: 'Branco · Reserva',
-    cats: ['branco', 'reserva'],
-    tag: 'Reserva',
-    star: true,
-    rows: [
-      ['Região', 'Mendoza'],
-      ['Linha', 'PeRo'],
-      ['Origem', 'Argentina'],
-    ],
-  },
-  {
-    id: '9',
-    name: 'Pato Criollo Red Blend',
-    varietal: 'Blend · Tinto',
-    cats: ['blend', 'tinto'],
-    tag: 'Blend',
-    star: false,
-    rows: [
-      ['Região', 'Mendoza'],
-      ['Uvas', 'Malbec, Cab. Sauv., Bonarda'],
-      ['Linha', 'Pato Criollo'],
-    ],
-  },
-  {
-    id: '10',
-    name: 'Pato Criollo White Blend',
-    varietal: 'Blend · Branco',
-    cats: ['blend', 'branco'],
-    tag: 'Blend',
-    star: false,
-    rows: [
-      ['Região', 'Mendoza'],
-      ['Uvas', 'Chardonnay, Torrontés, Viognier'],
-      ['Linha', 'Pato Criollo'],
-    ],
-  },
-  {
-    id: '11',
-    name: 'Dons da Terra Tinto',
-    varietal: 'Tinto',
-    cats: ['tinto'],
-    tag: 'Tinto',
-    star: false,
-    rows: [
-      ['Região', 'Portugal'],
-      ['Uvas', 'Touriga Nacional, Aragonez'],
-      ['Linha', 'Dons da Terra'],
-    ],
-  },
-  {
-    id: '12',
-    name: 'Dons da Terra Rosé',
-    varietal: 'Rosé',
-    cats: ['rose'],
-    tag: 'Rosé',
-    star: false,
-    rows: [
-      ['Região', 'Portugal'],
-      ['Uvas', 'Castelão, Touriga Nacional'],
-      ['Linha', 'Dons da Terra'],
-    ],
-  },
-  {
-    id: '13',
-    name: 'Dons da Terra Branco',
-    varietal: 'Branco',
-    cats: ['branco'],
-    tag: 'Branco',
-    star: false,
-    rows: [
-      ['Região', 'Portugal'],
-      ['Uvas', 'Fernão Pires, Arinto'],
-      ['Linha', 'Dons da Terra'],
-    ],
-  },
-];
 
 const Home = () => {
   const [navScrolled, setNavScrolled] = useState(false);
@@ -209,7 +20,7 @@ const Home = () => {
   const visibleIds = useMemo(() => {
     if (filter === 'todos') return null;
     return new Set(
-      PRODUCTS.filter((p) => p.cats.includes(filter)).map((p) => p.id),
+      WINES.filter((p) => p.cats.includes(filter)).map((p) => p.id),
     );
   }, [filter]);
 
@@ -222,7 +33,7 @@ const Home = () => {
         <a href="#top" className="santi-nav__brand">
           <img
             className="santi-nav__logo-img"
-            src={`${import.meta.env.BASE_URL}logo-sem-fundo.svg`}
+            src="https://ambienteprovisorio.com.br/santiesanti/logo-sem-fundo.svg"
             alt="Santi &amp; Santi"
             width="109"
             height="109"
@@ -348,13 +159,14 @@ const Home = () => {
             ))}
           </div>
           <div className="santi-grid">
-            {PRODUCTS.map((p) => {
+            {WINES.map((p) => {
               const hidden =
                 visibleIds !== null && !visibleIds.has(p.id);
               return (
-                <article
+                <Link
                   key={p.id}
-                  className={`santi-card${hidden ? ' hidden' : ''}`}
+                  to={`/vinho/${p.slug}`}
+                  className={`santi-card santi-card--link${hidden ? ' hidden' : ''}`}
                   data-cat={p.cats.join(' ')}
                 >
                   <div className="santi-card__top">
@@ -375,16 +187,16 @@ const Home = () => {
                     ))}
                   </div>
                   <div className="santi-card__foot">
-                    <a className="santi-card__link" href="#contato">
-                      Solicitar <span aria-hidden>→</span>
-                    </a>
+                    <span className="santi-card__link">
+                      Ver ficha <span aria-hidden>→</span>
+                    </span>
                     <div className="santi-rating" aria-label="Avaliação">
                       {[0, 1, 2, 3, 4].map((i) => (
                         <span key={i} />
                       ))}
                     </div>
                   </div>
-                </article>
+                </Link>
               );
             })}
           </div>

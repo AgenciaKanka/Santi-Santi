@@ -568,6 +568,129 @@
   background: var(--gold);
 }
 
+.santi-card--link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.santi-home a.santi-card--link {
+  color: inherit;
+}
+
+.santi-card--link:hover .santi-card__link {
+  gap: 16px;
+}
+
+/* Página interna do vinho */
+.santi-nav--inner {
+  position: relative;
+}
+
+.santi-wine-main {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 48px 48px 100px;
+}
+
+.santi-wine-breadcrumb {
+  margin: 0 0 28px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.santi-home .santi-wine-breadcrumb a {
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+.santi-home .santi-wine-breadcrumb a:hover {
+  color: var(--gold-light);
+}
+
+.santi-wine-breadcrumb__sep {
+  margin: 0 0.35em;
+  color: var(--muted);
+}
+
+.santi-wine-breadcrumb__current {
+  color: var(--gold-light);
+  text-transform: none;
+  letter-spacing: 0.06em;
+  font-size: 13px;
+}
+
+.santi-wine-head__tags {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.santi-wine-title {
+  font-size: clamp(38px, 5vw, 64px);
+  margin: 0 0 12px;
+}
+
+.santi-wine-var {
+  margin-bottom: 28px;
+}
+
+.santi-wine-placeholder {
+  min-height: 220px;
+  margin: 0 0 40px;
+  border: 1px dashed var(--border);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.santi-wine-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.santi-wine-panel h2 {
+  margin: 0 0 20px;
+}
+
+.santi-wine-dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 20px;
+  margin: 0;
+}
+
+.santi-wine-dl dt,
+.santi-wine-dl dd {
+  margin: 0;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+}
+
+.santi-wine-dl dt {
+  color: var(--muted);
+  font-weight: 300;
+}
+
+.santi-wine-dl dd {
+  color: var(--gold-light);
+  text-align: right;
+}
+
+.santi-wine-copy {
+  margin: 0 0 18px;
+  color: var(--gold-light);
+  font-size: 14px;
+  line-height: 1.85;
+}
+
+.santi-wine-panel .santi-btn {
+  margin-top: 12px;
+}
+
 /* Contato */
 .santi-contact {
   background: #0d0d0d;
@@ -839,5 +962,22 @@
   .santi-footer__links {
     flex-wrap: wrap;
     justify-content: center;
+  }
+
+  .santi-wine-main {
+    padding: 32px 24px 72px;
+  }
+
+  .santi-wine-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .santi-nav--inner .santi-nav__links {
+    display: flex !important;
+    gap: 14px;
+  }
+
+  .santi-nav--inner .santi-nav__cta {
+    display: none !important;
   }
 }
