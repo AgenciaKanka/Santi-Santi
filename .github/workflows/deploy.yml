@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  APP_PATH: /templateKanka
+  APP_PATH: /santiesanti
 
 jobs:
   build-and-deploy:

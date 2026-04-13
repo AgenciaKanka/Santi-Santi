@@ -1,71 +1,510 @@
-import { Link } from 'react-router-dom';
-import { LayoutTemplate, Sparkles, ChevronRight } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import './santi-home.css';
+
+type Product = {
+  id: string;
+  name: string;
+  varietal: string;
+  cats: string[];
+  tag: string;
+  star: boolean;
+  rows: [string, string][];
+};
+
+const FILTERS = [
+  { id: 'todos', label: 'Todos' },
+  { id: 'tinto', label: 'Tintos' },
+  { id: 'branco', label: 'Brancos' },
+  { id: 'rose', label: 'Rosés' },
+  { id: 'blend', label: 'Blends' },
+  { id: 'reserva', label: 'Reserva' },
+] as const;
+
+const PRODUCTS: Product[] = [
+  {
+    id: '1',
+    name: 'Pero Branco',
+    varietal: 'Branco',
+    cats: ['branco'],
+    tag: 'Branco',
+    star: false,
+    rows: [
+      ['Região', 'Mendoza'],
+      ['Linha', 'PeRo'],
+      ['Origem', 'Argentina'],
+    ],
+  },
+  {
+    id: '2',
+    name: 'Pero Rosé',
+    varietal: 'Rosé',
+    cats: ['rose'],
+    tag: 'Rosé',
+    star: false,
+    rows: [
+      ['Região', 'Mendoza'],
+      ['Linha', 'PeRo'],
+      ['Origem', 'Argentina'],
+    ],
+  },
+  {
+    id: '3',
+    name: 'Malbec',
+    varietal: 'Tinto',
+    cats: ['tinto'],
+    tag: 'Tinto',
+    star: false,
+    rows: [
+      ['Região', 'Luján de Cuyo'],
+      ['Linha', 'PeRo'],
+      ['Origem', 'Argentina'],
+    ],
+  },
+  {
+    id: '4',
+    name: 'Cabernet Sauvignon',
+    varietal: 'Tinto',
+    cats: ['tinto'],
+    tag: 'Tinto',
+    star: false,
+    rows: [
+      ['Região', 'Valle de Uco'],
+      ['Linha', 'PeRo'],
+      ['Origem', 'Argentina'],
+    ],
+  },
+  {
+    id: '5',
+    name: 'Malbec Reserva',
+    varietal: 'Tinto · Reserva',
+    cats: ['tinto', 'reserva'],
+    tag: 'Reserva',
+    star: true,
+    rows: [
+      ['Região', 'Alto Valle'],
+      ['Linha', 'PeRo'],
+      ['Origem', 'Argentina'],
+    ],
+  },
+  {
+    id: '6',
+    name: 'Cabernet Franc Reserva',
+    varietal: 'Tinto · Reserva',
+    cats: ['tinto', 'reserva'],
+    tag: 'Reserva',
+    star: true,
+    rows: [
+      ['Região', 'Mendoza'],
+      ['Linha', 'PeRo'],
+      ['Origem', 'Argentina'],
+    ],
+  },
+  {
+    id: '7',
+    name: 'Cabernet Sauvignon Reserva',
+    varietal: 'Tinto · Reserva',
+    cats: ['tinto', 'reserva'],
+    tag: 'Reserva',
+    star: true,
+    rows: [
+      ['Região', 'Valle de Uco'],
+      ['Linha', 'PeRo'],
+      ['Origem', 'Argentina'],
+    ],
+  },
+  {
+    id: '8',
+    name: 'Chardonnay Reserva',
+    varietal: 'Branco · Reserva',
+    cats: ['branco', 'reserva'],
+    tag: 'Reserva',
+    star: true,
+    rows: [
+      ['Região', 'Mendoza'],
+      ['Linha', 'PeRo'],
+      ['Origem', 'Argentina'],
+    ],
+  },
+  {
+    id: '9',
+    name: 'Pato Criollo Red Blend',
+    varietal: 'Blend · Tinto',
+    cats: ['blend', 'tinto'],
+    tag: 'Blend',
+    star: false,
+    rows: [
+      ['Região', 'Mendoza'],
+      ['Uvas', 'Malbec, Cab. Sauv., Bonarda'],
+      ['Linha', 'Pato Criollo'],
+    ],
+  },
+  {
+    id: '10',
+    name: 'Pato Criollo White Blend',
+    varietal: 'Blend · Branco',
+    cats: ['blend', 'branco'],
+    tag: 'Blend',
+    star: false,
+    rows: [
+      ['Região', 'Mendoza'],
+      ['Uvas', 'Chardonnay, Torrontés, Viognier'],
+      ['Linha', 'Pato Criollo'],
+    ],
+  },
+  {
+    id: '11',
+    name: 'Dons da Terra Tinto',
+    varietal: 'Tinto',
+    cats: ['tinto'],
+    tag: 'Tinto',
+    star: false,
+    rows: [
+      ['Região', 'Portugal'],
+      ['Uvas', 'Touriga Nacional, Aragonez'],
+      ['Linha', 'Dons da Terra'],
+    ],
+  },
+  {
+    id: '12',
+    name: 'Dons da Terra Rosé',
+    varietal: 'Rosé',
+    cats: ['rose'],
+    tag: 'Rosé',
+    star: false,
+    rows: [
+      ['Região', 'Portugal'],
+      ['Uvas', 'Castelão, Touriga Nacional'],
+      ['Linha', 'Dons da Terra'],
+    ],
+  },
+  {
+    id: '13',
+    name: 'Dons da Terra Branco',
+    varietal: 'Branco',
+    cats: ['branco'],
+    tag: 'Branco',
+    star: false,
+    rows: [
+      ['Região', 'Portugal'],
+      ['Uvas', 'Fernão Pires, Arinto'],
+      ['Linha', 'Dons da Terra'],
+    ],
+  },
+];
 
 const Home = () => {
+  const [navScrolled, setNavScrolled] = useState(false);
+  const [filter, setFilter] = useState<(typeof FILTERS)[number]['id']>('todos');
+
+  const onScroll = useCallback(() => {
+    setNavScrolled(window.scrollY > 80);
+  }, []);
+
+  useEffect(() => {
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [onScroll]);
+
+  const visibleIds = useMemo(() => {
+    if (filter === 'todos') return null;
+    return new Set(
+      PRODUCTS.filter((p) => p.cats.includes(filter)).map((p) => p.id),
+    );
+  }, [filter]);
+
   return (
-    <div className="min-h-screen bg-light text-dark font-sans flex flex-col selection:bg-primary/20">
-      {/* Navbar Minimalista */}
-      <nav className="w-full h-20 flex items-center justify-between px-8 md:px-16 border-b border-gray-200/60 bg-white/50 backdrop-blur-md sticky top-0 z-50">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-blue-400 flex items-center justify-center shadow-lg shadow-blue-500/20">
-            <LayoutTemplate size={22} className="text-white" />
+    <div className="santi-home">
+      <header
+        className={`santi-nav${navScrolled ? ' is-scrolled' : ''}`}
+        id="top"
+      >
+        <a href="#top" className="santi-nav__brand">
+          <img
+            className="santi-nav__logo-img"
+            src={`${import.meta.env.BASE_URL}logo-sem-fundo.svg`}
+            alt="Santi &amp; Santi"
+            width="109"
+            height="109"
+            decoding="async"
+          />
+          <span className="santi-nav__name">
+            Santi &amp; Santi Importadora
+          </span>
+        </a>
+        <nav className="santi-nav__links" aria-label="Principal">
+          <a href="#sobre">Sobre</a>
+          <a href="#produtos">Produtos</a>
+          <a href="#contato">Contato</a>
+        </nav>
+        <a className="santi-nav__cta" href="#contato">
+          Solicitar Catálogo
+        </a>
+      </header>
+
+      <section className="santi-section santi-section--tight-top" id="hero">
+        <div className="santi-hero">
+          <div className="santi-hero__left">
+            <p className="santi-eyebrow">Importadora &amp; Distribuidora</p>
+            <h1 className="santi-title">
+              Vinhos selecionados com <em>alma</em> e precisão.
+            </h1>
+            <p className="santi-hero__desc">
+              Curadoria entre Mendoza e Portugal, logística impecável e
+              parceria próxima com quem valoriza o detalhe — do portfólio ao
+              copo.
+            </p>
+            <div className="santi-hero__actions">
+              <a className="santi-btn santi-btn--primary" href="#contato">
+                Fale conosco
+              </a>
+              <a className="santi-btn santi-btn--ghost" href="#produtos">
+                Ver linhas <span aria-hidden>→</span>
+              </a>
+            </div>
           </div>
-          <span className="font-bold text-xl tracking-tight text-gray-900">Kanka</span>
+          <div className="santi-hero__right">
+            <div className="santi-hero__figure">
+              <img
+                src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=900&q=80"
+                alt=""
+                loading="eager"
+              />
+            </div>
+            <div className="santi-hero__float">
+              <p className="santi-hero__float-title">Seleção 2026</p>
+              <p>PeRo · Pato Criollo · Dons da Terra</p>
+            </div>
+            <p className="santi-hero__scroll">Scroll</p>
+          </div>
         </div>
-        <div className="flex items-center gap-4">
-          <Link
-            to="/login"
-            className="items-center justify-center gap-2 bg-dark hover:bg-gray-800 text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-md active:scale-95 hidden md:flex"
-          >
-            Acessar Admin
-            <ChevronRight size={16} />
-          </Link>
+      </section>
+
+      <section className="santi-section" id="sobre">
+        <div className="santi-about">
+          <div className="santi-about__visual">
+            <div className="santi-about__img santi-about__img--a">
+              <img
+                src="https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=700&q=80"
+                alt=""
+              />
+            </div>
+            <div className="santi-about__img santi-about__img--b">
+              <img
+                src="https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=700&q=80"
+                alt=""
+              />
+            </div>
+          </div>
+          <div className="santi-about__text">
+            <p className="santi-eyebrow">Sobre nós</p>
+            <h2 className="santi-title">
+              Importação com <em>disciplina</em> e sensibilidade.
+            </h2>
+            <p>
+              A Santi &amp; Santi nasceu da vontade de aproximar rótulos
+              autênticos do mercado brasileiro, com transparência na cadeia e
+              respeito ao produtor.
+            </p>
+            <p>
+              Trabalhamos com marcas que traduzem terroir e consistência —
+              desde labels icônicos até edições que merecem destaque em carta e
+              adega.
+            </p>
+            <div className="santi-stats">
+              <div>
+                <div className="santi-stat__num">13+</div>
+                <div className="santi-stat__lbl">Rótulos ativos</div>
+              </div>
+              <div>
+                <div className="santi-stat__num">2</div>
+                <div className="santi-stat__lbl">Países de origem</div>
+              </div>
+              <div>
+                <div className="santi-stat__num">100%</div>
+                <div className="santi-stat__lbl">Curadoria própria</div>
+              </div>
+            </div>
+          </div>
         </div>
-      </nav>
+      </section>
 
-      {/* Hero Section */}
-      <main className="flex-1 flex flex-col items-center justify-center p-8 text-center relative overflow-hidden">
-        {/* Abstract Background Shapes */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
-
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-primary text-sm font-medium mb-8 animate-fade-in-up">
-          <Sparkles size={16} />
-          <span>Setup concluído com sucesso</span>
+      <section className="santi-section" id="produtos">
+        <div className="santi-products">
+          <div className="santi-products__head">
+            <p className="santi-eyebrow">Portfólio</p>
+            <h2 className="santi-title">Produtos</h2>
+          </div>
+          <div className="santi-filters" role="group" aria-label="Filtrar por categoria">
+            {FILTERS.map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                className={`santi-filter-btn${filter === f.id ? ' active' : ''}`}
+                onClick={() => setFilter(f.id)}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+          <div className="santi-grid">
+            {PRODUCTS.map((p) => {
+              const hidden =
+                visibleIds !== null && !visibleIds.has(p.id);
+              return (
+                <article
+                  key={p.id}
+                  className={`santi-card${hidden ? ' hidden' : ''}`}
+                  data-cat={p.cats.join(' ')}
+                >
+                  <div className="santi-card__top">
+                    <span className="santi-card__tag">{p.tag}</span>
+                    <span className="santi-card__badge" aria-hidden={!p.star}>
+                      {p.star ? '★' : ''}
+                    </span>
+                  </div>
+                  <div className="santi-card__visual" aria-hidden />
+                  <h3 className="santi-card__name">{p.name}</h3>
+                  <p className="santi-card__var">{p.varietal}</p>
+                  <div className="santi-card__rows">
+                    {p.rows.map(([k, v]) => (
+                      <div key={k} className="santi-card__row">
+                        <span>{k}</span>
+                        <span>{v}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="santi-card__foot">
+                    <a className="santi-card__link" href="#contato">
+                      Solicitar <span aria-hidden>→</span>
+                    </a>
+                    <div className="santi-rating" aria-label="Avaliação">
+                      {[0, 1, 2, 3, 4].map((i) => (
+                        <span key={i} />
+                      ))}
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         </div>
+      </section>
 
-        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600 mb-6 max-w-4xl leading-tight">
-          Kanka — Full Stack Template
-        </h1>
-
-        {/* <p className="text-xl md:text-2xl text-gray-500 mb-12 max-w-2xl font-light">
-          Um ponto de partida visualmente impressionante, construído com ferramentas modernas para criar aplicações robustas e limpas.
-        </p> */}
-
-        {/* <div className="flex flex-col sm:flex-row items-center gap-4 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-          <Link 
-            to="/login"
-            className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-white px-8 py-4 rounded-xl font-semibold transition-all shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 flex items-center justify-center gap-2 text-lg active:scale-95"
+      <section className="santi-section santi-contact" id="contato">
+        <div className="santi-contact__inner">
+          <div className="santi-contact__text">
+            <p className="santi-eyebrow">Contato</p>
+            <h2 className="santi-title">
+              Solicite o <em>catálogo</em> ou uma conversa.
+            </h2>
+            <p>
+              Equipe comercial pronta para atender importadores, distribuidores
+              e canais HORECA com propostas sob medida.
+            </p>
+            <div className="santi-info-list">
+              <div className="santi-info-item">
+                <span className="santi-info-item__icon" aria-hidden>
+                  ✉
+                </span>
+                <div>
+                  <strong>E-mail</strong>
+                  <span>contato@santiesanti.com.br</span>
+                </div>
+              </div>
+              <div className="santi-info-item">
+                <span className="santi-info-item__icon" aria-hidden>
+                  ◎
+                </span>
+                <div>
+                  <strong>Atendimento</strong>
+                  <span>Segunda a sexta, 9h–18h</span>
+                </div>
+              </div>
+              <div className="santi-info-item">
+                <span className="santi-info-item__icon" aria-hidden>
+                  ◈
+                </span>
+                <div>
+                  <strong>Logística</strong>
+                  <span>Entregas em todo o território nacional</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form
+            className="santi-form"
+            onSubmit={(e) => e.preventDefault()}
           >
-            Visualizar Dashboard
-            <Rocket size={20} />
-          </Link>
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noreferrer"
-            className="w-full sm:w-auto bg-white hover:bg-gray-50 text-dark border border-gray-200 px-8 py-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 text-lg active:scale-95 shadow-sm"
-          >
-            Ver Repositório
-            <Code2 size={20} />
+            <div className="santi-form__grid">
+              <div className="santi-form__span2">
+                <label htmlFor="nome">Nome</label>
+                <input
+                  id="nome"
+                  name="nome"
+                  type="text"
+                  autoComplete="name"
+                  placeholder="Nome completo"
+                />
+              </div>
+              <div>
+                <label htmlFor="email">E-mail</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="nome@empresa.com.br"
+                />
+              </div>
+              <div>
+                <label htmlFor="telefone">Telefone</label>
+                <input
+                  id="telefone"
+                  name="telefone"
+                  type="tel"
+                  autoComplete="tel"
+                  placeholder="(00) 00000-0000"
+                />
+              </div>
+            </div>
+            <div className="santi-form__full">
+              <label htmlFor="mensagem">Mensagem</label>
+              <textarea
+                id="mensagem"
+                name="mensagem"
+                rows={5}
+                placeholder="Linhas de interesse, volumes, prazo para retorno…"
+              />
+            </div>
+            <p className="santi-form__note">
+              Ao enviar, você concorda com o uso dos dados apenas para retorno
+              comercial, conforme nossa política de privacidade.
+            </p>
+            <button type="submit">Enviar mensagem</button>
+          </form>
+        </div>
+      </section>
+
+      <footer className="santi-footer">
+        <span>
+          © {new Date().getFullYear()} Santi &amp; Santi Importadora e
+          Distribuidora
+        </span>
+        <div className="santi-footer__links">
+          <a href="#top">Privacidade</a>
+          <a href="#top">Termos</a>
+          <a href="#contato">Contato</a>
+        </div>
+        <div className="santi-footer__social">
+          <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
+            in
           </a>
-        </div> */}
-      </main>
-
-      {/* Footer Minimalista
-      <footer className="w-full py-8 text-center text-gray-500 text-sm">
-        <p>Desenvolvido para criar o futuro da web. {new Date().getFullYear()}</p>
-      </footer> */}
+          <a href="https://www.instagram.com" target="_blank" rel="noreferrer">
+            IG
+          </a>
+        </div>
+      </footer>
     </div>
   );
 };
