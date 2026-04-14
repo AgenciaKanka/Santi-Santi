@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useMemo } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
+import { FooterSocial } from '../components/FooterSocial';
 import { getWineByRouteParam } from '../data/wines';
 import './santi-home.css';
 
@@ -132,14 +133,7 @@ const WineDetail = () => {
           <Link to="/#top">Termos</Link>
           <Link to="/#contato">Contato</Link>
         </div>
-        <div className="santi-footer__social">
-          <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
-            in
-          </a>
-          <a href="https://www.instagram.com" target="_blank" rel="noreferrer">
-            IG
-          </a>
-        </div>
+        <FooterSocial />
       </footer>
     </div>
   );

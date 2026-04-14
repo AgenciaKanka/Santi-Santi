@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FooterSocial } from '../components/FooterSocial';
 import { FILTERS, WINES } from '../data/wines';
 import './santi-home.css';
 
@@ -298,8 +299,8 @@ const Home = () => {
             </a>
             <a
               className="santi-btn-pill"
-              href={`${base}catalogo.pdf`}
-              download
+              href={`${base}${encodeURIComponent('SantiSanti_-1.pdf')}`}
+              download="SantiSanti-catalogo.pdf"
             >
               Baixar catálogo
             </a>
@@ -412,14 +413,7 @@ const Home = () => {
           <a href="#top">Termos</a>
           <a href="#contato">Contato</a>
         </div>
-        <div className="santi-footer__social">
-          <a href="https://www.linkedin.com" target="_blank" rel="noreferrer">
-            in
-          </a>
-          <a href="https://www.instagram.com" target="_blank" rel="noreferrer">
-            IG
-          </a>
-        </div>
+        <FooterSocial />
       </footer>
     </div>
   );
