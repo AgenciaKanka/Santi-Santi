@@ -4,8 +4,6 @@ import { FooterSocial } from '../components/FooterSocial';
 import { getWineByRouteParam } from '../data/wines';
 import './santi-home.css';
 
-const base = import.meta.env.BASE_URL || '/';
-
 const WineDetail = () => {
   const { slug } = useParams<{ slug: string }>();
   const wine = useMemo(() => getWineByRouteParam(slug), [slug]);
@@ -26,30 +24,12 @@ const WineDetail = () => {
 
   return (
     <div className="santi-home santi-wine-page">
-      <header className="santi-nav santi-nav--inner is-scrolled">
-        <Link to="/" className="santi-nav__brand">
-          <img
-            className="santi-nav__logo-img"
-            src={`${base}logo-sem-fundo.svg`}
-            alt="Santi & Santi"
-            width="109"
-            height="109"
-            decoding="async"
-          />
-          <span className="santi-nav__name">
-            Santi &amp; Santi Importadora
-          </span>
-        </Link>
-        <nav className="santi-nav__links" aria-label="Secundário">
-          <Link to="/#produtos">← Catálogo</Link>
-          <Link to="/#contato">Contato</Link>
-        </nav>
-        <Link className="santi-nav__cta" to="/#contato">
-          Solicitar Catálogo
-        </Link>
-      </header>
-
       <main className="santi-wine-main">
+        <div className="santi-wine-back">
+          <Link to="/#produtos" className="santi-wine-back__link">
+            <span aria-hidden>←</span> Voltar ao catálogo
+          </Link>
+        </div>
         <p className="santi-wine-breadcrumb">
           <Link to="/">Início</Link>
           <span className="santi-wine-breadcrumb__sep" aria-hidden>

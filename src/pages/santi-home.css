@@ -768,15 +768,36 @@
   outline-offset: 4px;
 }
 
-/* Página interna do vinho */
-.santi-nav--inner {
-  position: relative;
-}
-
+/* Página interna do vinho (sem cabeçalho fixo — alinhado à home) */
 .santi-wine-main {
   max-width: 920px;
   margin: 0 auto;
   padding: 48px 48px 100px;
+}
+
+.santi-wine-back {
+  margin: 0 0 14px;
+}
+
+.santi-wine-back__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s ease, gap 0.3s ease;
+}
+
+.santi-home .santi-wine-back__link {
+  color: var(--muted);
+}
+
+.santi-wine-back__link:hover {
+  color: var(--gold-light);
+  gap: 14px;
 }
 
 .santi-wine-breadcrumb {
@@ -1229,14 +1250,5 @@
 
   .santi-wine-grid {
     grid-template-columns: 1fr;
-  }
-
-  .santi-nav--inner .santi-nav__links {
-    display: flex !important;
-    gap: 14px;
-  }
-
-  .santi-nav--inner .santi-nav__cta {
-    display: none !important;
   }
 }
