@@ -1,21 +1,50 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { CSSProperties } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FILTERS, WINES } from '../data/wines';
 import './santi-home.css';
 
-const Home = () => {
-  const [navScrolled, setNavScrolled] = useState(false);
-  const [filter, setFilter] = useState<(typeof FILTERS)[number]['id']>('todos');
+const base = import.meta.env.BASE_URL || '/';
 
-  const onScroll = useCallback(() => {
-    setNavScrolled(window.scrollY > 80);
-  }, []);
+/** Arquivos em /public — ordem de exibição no carrossel */
+const CAROUSEL_FILES = [
+  'alp0h3e (1).jpeg',
+  'cpywczg (1).jpeg',
+  'fq2dweh (1).jpeg',
+  'gx5nrvq (1).jpeg',
+  'kcesn0u (1).jpeg',
+  'mimfbcq.jpeg',
+  'o8q8ozg (1).jpeg',
+  'u12ec77 (1).jpeg',
+] as const;
+
+const CAROUSEL_SLIDES = CAROUSEL_FILES.map((file, i) => ({
+  src: `${base}${encodeURIComponent(file)}`,
+  alt: `Destaque do portfólio — imagem ${i + 1} de ${CAROUSEL_FILES.length}`,
+}));
+
+/** Quantas miniaturas aparecem ao mesmo tempo no carrossel */
+const CAROUSEL_VISIBLE = 3;
+
+const Home = () => {
+  const [filter, setFilter] = useState<(typeof FILTERS)[number]['id']>('todos');
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const carouselLen = CAROUSEL_SLIDES.length;
+  const carouselMaxIndex = Math.max(0, carouselLen - CAROUSEL_VISIBLE);
+  const carouselPageCount = carouselMaxIndex + 1;
 
   useEffect(() => {
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [onScroll]);
+    if (carouselMaxIndex <= 0) return undefined;
+    const id = window.setInterval(() => {
+      setCarouselIndex((i) => (i >= carouselMaxIndex ? 0 : i + 1));
+    }, 6000);
+    return () => window.clearInterval(id);
+  }, [carouselMaxIndex]);
+
+  const goPrev = () =>
+    setCarouselIndex((i) => (i <= 0 ? carouselMaxIndex : i - 1));
+  const goNext = () =>
+    setCarouselIndex((i) => (i >= carouselMaxIndex ? 0 : i + 1));
 
   const visibleIds = useMemo(() => {
     if (filter === 'todos') return null;
@@ -26,36 +55,22 @@ const Home = () => {
 
   return (
     <div className="santi-home">
-      <header
-        className={`santi-nav${navScrolled ? ' is-scrolled' : ''}`}
-        id="top"
-      >
-        <a href="#top" className="santi-nav__brand">
-          <img
-            className="santi-nav__logo-img"
-            src="https://ambienteprovisorio.com.br/santiesanti/logo-sem-fundo.svg"
-            alt="Santi &amp; Santi"
-            width="109"
-            height="109"
-            decoding="async"
-          />
-          <span className="santi-nav__name">
-            Santi &amp; Santi Importadora
-          </span>
-        </a>
-        <nav className="santi-nav__links" aria-label="Principal">
-          <a href="#sobre">Sobre</a>
-          <a href="#produtos">Produtos</a>
-          <a href="#contato">Contato</a>
-        </nav>
-        <a className="santi-nav__cta" href="#contato">
-          Solicitar Catálogo
-        </a>
-      </header>
-
-      <section className="santi-section santi-section--tight-top" id="hero">
+      <section className="santi-section" id="top">
         <div className="santi-hero">
           <div className="santi-hero__left">
+            <a href="#top" className="santi-hero__brand">
+              <img
+                className="santi-hero__logo"
+                src={`${base}logo-sem-fundo.svg`}
+                alt="Santi &amp; Santi"
+                width="109"
+                height="109"
+                decoding="async"
+              />
+              <span className="santi-hero__brand-name">
+                Santi &amp; Santi Importadora
+              </span>
+            </a>
             <p className="santi-eyebrow">Importadora &amp; Distribuidora</p>
             <h1 className="santi-title">
               Vinhos selecionados com <em>alma</em> e precisão.
@@ -84,7 +99,7 @@ const Home = () => {
             </div>
             <div className="santi-hero__float">
               <p className="santi-hero__float-title">Seleção 2026</p>
-              <p>PeRo · Pato Criollo · Dons da Terra</p>
+              <p>Potre · Pato Criollo · Dons da Terra</p>
             </div>
             <p className="santi-hero__scroll">Scroll</p>
           </div>
@@ -146,6 +161,82 @@ const Home = () => {
             <p className="santi-eyebrow">Portfólio</p>
             <h2 className="santi-title">Produtos</h2>
           </div>
+
+          <div
+            className="santi-carousel"
+            role="region"
+            aria-roledescription="carrossel"
+            aria-label="Destaques do portfólio"
+            style={
+              {
+                '--carousel-n': carouselLen,
+                '--carousel-visible': CAROUSEL_VISIBLE,
+              } as CSSProperties
+            }
+          >
+            <div className="santi-carousel__viewport">
+              <div
+                className="santi-carousel__track"
+                style={{
+                  transform: `translateX(calc(-1 * ${carouselIndex} * 100% / var(--carousel-n)))`,
+                }}
+              >
+                {CAROUSEL_SLIDES.map((slide, i) => {
+                  const inView =
+                    i >= carouselIndex &&
+                    i < carouselIndex + CAROUSEL_VISIBLE;
+                  return (
+                    <div
+                      key={slide.src}
+                      className="santi-carousel__slide"
+                      aria-hidden={!inView}
+                    >
+                      <img
+                        src={slide.src}
+                        alt={slide.alt}
+                        loading={i < CAROUSEL_VISIBLE ? 'eager' : 'lazy'}
+                        decoding="async"
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <button
+              type="button"
+              className="santi-carousel__nav santi-carousel__nav--prev"
+              onClick={goPrev}
+              aria-label="Grupo anterior de imagens"
+            >
+              <span aria-hidden>‹</span>
+            </button>
+            <button
+              type="button"
+              className="santi-carousel__nav santi-carousel__nav--next"
+              onClick={goNext}
+              aria-label="Próximo grupo de imagens"
+            >
+              <span aria-hidden>›</span>
+            </button>
+            <div
+              className="santi-carousel__dots"
+              role="tablist"
+              aria-label="Selecionar grupo de imagens"
+            >
+              {Array.from({ length: carouselPageCount }, (_, page) => (
+                <button
+                  key={page}
+                  type="button"
+                  role="tab"
+                  aria-selected={page === carouselIndex}
+                  aria-label={`Grupo ${page + 1} de ${carouselPageCount}`}
+                  className={`santi-carousel__dot${page === carouselIndex ? ' active' : ''}`}
+                  onClick={() => setCarouselIndex(page)}
+                />
+              ))}
+            </div>
+          </div>
+
           <div className="santi-filters" role="group" aria-label="Filtrar por categoria">
             {FILTERS.map((f) => (
               <button
@@ -199,6 +290,19 @@ const Home = () => {
                 </Link>
               );
             })}
+          </div>
+
+          <div className="santi-products__cta-row">
+            <a className="santi-btn-pill" href="#contato">
+              Seja um revendedor
+            </a>
+            <a
+              className="santi-btn-pill"
+              href={`${base}catalogo.pdf`}
+              download
+            >
+              Baixar catálogo
+            </a>
           </div>
         </div>
       </section>

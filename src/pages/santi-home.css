@@ -78,6 +78,7 @@
   display: flex;
   align-items: center;
   gap: 36px;
+  margin-right: auto;
 }
 
 .santi-nav__links a {
@@ -160,24 +161,56 @@
   animation: santi-fadeUp 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+.santi-hero__brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+  text-decoration: none;
+}
+
+.santi-hero__logo {
+  width: 109px;
+  height: 109px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
+
+.santi-hero__brand-name {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 300;
+  font-size: 28px;
+  letter-spacing: 0.04em;
+  color: var(--gold);
+}
+
+.santi-home .santi-hero__brand-name {
+  color: var(--gold);
+}
+
+.santi-hero__left .santi-hero__brand {
+  animation-delay: 0.02s;
+}
+
 .santi-hero__left .santi-eyebrow {
-  animation-delay: 0.05s;
+  animation-delay: 0.1s;
 }
 
 .santi-hero__left .santi-title {
-  animation-delay: 0.15s;
+  animation-delay: 0.18s;
   margin: 20px 0 24px;
 }
 
 .santi-hero__left .santi-hero__desc {
-  animation-delay: 0.28s;
+  animation-delay: 0.3s;
   max-width: 420px;
   color: var(--gold-light);
   margin: 0 0 36px;
 }
 
 .santi-hero__actions {
-  animation-delay: 0.4s;
+  animation-delay: 0.42s;
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
@@ -395,6 +428,113 @@
   font-size: clamp(44px, 5vw, 72px);
 }
 
+/* Carrossel (antes da listagem de produtos) — 3 imagens visíveis, inteiras (contain) */
+.santi-carousel {
+  --carousel-visible: 3;
+  position: relative;
+  margin: 0 0 40px;
+  background: #050505;
+  overflow: hidden;
+  padding-bottom: 44px;
+}
+
+.santi-carousel__viewport {
+  overflow: hidden;
+  min-height: clamp(200px, 30vw, 400px);
+}
+
+.santi-carousel__track {
+  display: flex;
+  align-items: stretch;
+  min-height: clamp(200px, 30vw, 400px);
+  width: calc(100% * var(--carousel-n) / var(--carousel-visible));
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.santi-carousel__slide {
+  flex: 0 0 calc(100% / var(--carousel-n));
+  box-sizing: border-box;
+  min-height: clamp(200px, 30vw, 400px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 14px;
+}
+
+.santi-carousel__slide img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.santi-carousel__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  background: rgba(10, 10, 10, 0.75);
+  color: var(--gold);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+}
+
+.santi-carousel__nav:hover {
+  border-color: var(--gold);
+  background: rgba(10, 10, 10, 0.92);
+}
+
+.santi-carousel__nav--prev {
+  left: 16px;
+}
+
+.santi-carousel__nav--next {
+  right: 16px;
+}
+
+.santi-carousel__dots {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.santi-carousel__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.santi-carousel__dot:hover {
+  border-color: var(--gold-light);
+}
+
+.santi-carousel__dot.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  transform: scale(1.15);
+}
+
 .santi-filters {
   display: flex;
   flex-wrap: wrap;
@@ -582,6 +722,52 @@
   gap: 16px;
 }
 
+/* CTAs ao final da listagem de produtos */
+.santi-products__cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px 40px;
+  margin-top: 52px;
+}
+
+.santi-btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 40px;
+  min-height: 52px;
+  border-radius: 999px;
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: var(--gold);
+  font-family: inherit;
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.santi-home .santi-btn-pill {
+  color: var(--gold);
+}
+
+.santi-btn-pill:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--gold-light);
+  transform: translateY(-2px);
+}
+
+.santi-btn-pill:focus-visible {
+  outline: 1px solid var(--gold);
+  outline-offset: 4px;
+}
+
 /* Página interna do vinho */
 .santi-nav--inner {
   position: relative;
@@ -635,6 +821,24 @@
 
 .santi-wine-var {
   margin-bottom: 28px;
+}
+
+.santi-wine-awards {
+  margin: 0 0 24px;
+  max-width: 520px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  line-height: 1.65;
+}
+
+.santi-wine-panel .santi-eyebrow + .santi-wine-copy {
+  margin-top: 0;
+}
+
+.santi-wine-panel .santi-wine-copy + .santi-eyebrow {
+  margin-top: 28px;
 }
 
 .santi-wine-placeholder {
@@ -918,6 +1122,15 @@
     min-height: unset;
   }
 
+  .santi-hero__logo {
+    width: 72px;
+    height: 72px;
+  }
+
+  .santi-hero__brand-name {
+    font-size: 20px;
+  }
+
   .santi-hero__scroll {
     display: none;
   }
@@ -943,6 +1156,48 @@
 
   .santi-grid {
     grid-template-columns: 1fr;
+  }
+
+  .santi-carousel__viewport {
+    min-height: clamp(180px, 42vw, 340px);
+  }
+
+  .santi-carousel__track {
+    min-height: clamp(180px, 42vw, 340px);
+  }
+
+  .santi-carousel__slide {
+    min-height: clamp(180px, 42vw, 340px);
+    padding: 8px 6px;
+  }
+
+  .santi-carousel__nav {
+    width: 38px;
+    height: 38px;
+    font-size: 22px;
+  }
+
+  .santi-carousel__nav--prev {
+    left: 10px;
+  }
+
+  .santi-carousel__nav--next {
+    right: 10px;
+  }
+
+  .santi-products__cta-row {
+    margin-top: 40px;
+    gap: 14px 24px;
+  }
+
+  .santi-btn-pill {
+    padding: 14px 28px;
+    min-height: 48px;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
   }
 
   .santi-contact__inner {

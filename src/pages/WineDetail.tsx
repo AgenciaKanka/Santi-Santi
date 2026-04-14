@@ -72,6 +72,9 @@ const WineDetail = () => {
           </div>
           <h1 className="santi-title santi-wine-title">{wine.name}</h1>
           <p className="santi-card__var santi-wine-var">{wine.varietal}</p>
+          {wine.awards ? (
+            <p className="santi-wine-awards">{wine.awards}</p>
+          ) : null}
         </div>
 
         <div className="santi-card__visual santi-wine-placeholder" aria-hidden />
@@ -89,15 +92,28 @@ const WineDetail = () => {
             </dl>
           </section>
           <section className="santi-wine-panel">
-            <h2 className="santi-eyebrow">Sobre o rótulo</h2>
+            {wine.elaboration ? (
+              <>
+                <h2 className="santi-eyebrow">Elaboração</h2>
+                <p className="santi-wine-copy">{wine.elaboration}</p>
+              </>
+            ) : null}
+            {wine.tastingNotes ? (
+              <>
+                <h2 className="santi-eyebrow">Notas de degustação</h2>
+                <p className="santi-wine-copy">{wine.tastingNotes}</p>
+              </>
+            ) : null}
+            {wine.pairing ? (
+              <>
+                <h2 className="santi-eyebrow">Harmonização</h2>
+                <p className="santi-wine-copy">{wine.pairing}</p>
+              </>
+            ) : null}
+            <h2 className="santi-eyebrow">Comercialização</h2>
             <p className="santi-wine-copy">
-              Rótulo integrante do portfólio curado pela Santi &amp; Santi.
-              Disponibilidade, condições comerciais e logística podem ser
-              alinhadas com nossa equipe conforme sua operação e região.
-            </p>
-            <p className="santi-wine-copy">
-              Para cotação, amostras ou inclusão em carta, envie uma mensagem
-              indicando este produto.
+              Rótulo do portfólio Santi &amp; Santi. Disponibilidade, condições
+              e logística são tratadas com nossa equipe conforme sua operação.
             </p>
             <Link className="santi-btn santi-btn--primary" to="/#contato">
               Solicitar este vinho
