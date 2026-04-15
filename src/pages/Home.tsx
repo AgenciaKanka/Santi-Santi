@@ -350,8 +350,8 @@ const Home = () => {
                   <h3 className="santi-card__name">{p.name}</h3>
                   <p className="santi-card__var">{p.varietal}</p>
                   <div className="santi-card__rows">
-                    {p.rows.map(([k, v]) => (
-                      <div key={k} className="santi-card__row">
+                    {p.cardRows.map(([k, v]) => (
+                      <div key={`${p.id}-${k}`} className="santi-card__row">
                         <span>{k}</span>
                         <span>{v}</span>
                       </div>

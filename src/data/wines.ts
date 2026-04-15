@@ -1,35 +1,23 @@
 export type WineProduct = {
   id: string;
-  /** URL amigável, ex.: cabernet-franc-reserva */
   slug: string;
-  /** Nome do ficheiro em `public/` (ex.: Potre Malbec.png) */
   image?: string;
   name: string;
   varietal: string;
   cats: string[];
   tag: string;
   star: boolean;
+  /** Resumo curto para o card do catálogo (a ficha completa usa `rows`) */
+  cardRows: [string, string][];
   rows: [string, string][];
-  /** Elaboração / vinificação (texto na ficha completa) */
+  /** Frase de destaque do catálogo (só na ficha completa, abaixo da variedade) */
+  headline?: string;
   elaboration?: string;
-  /** Notas de degustação */
   tastingNotes?: string;
-  /** Harmonização */
   pairing?: string;
-  /** Prêmios ou menções */
   awards?: string;
 };
 
-const ELAB_POTRE_BASE =
-  'Colheita manual, recepção e desengace, fermentação com temperatura controlada em tanques de inox com leveduras selecionadas, clarificação, blend, filtração e engarrafamento.';
-
-const ELAB_PATO_BASE =
-  'Colheita manual, recepção e desengace, fermentação com temperatura controlada em tanques de inox com leveduras selecionadas, clarificação, filtração e engarrafamento.';
-
-const ELAB_DONS_BASE =
-  'Colheita manual das uvas, recepção e desengace, fermentação com temperatura controlada em tanques de inox com leveduras selecionadas, clarificação, filtração e fracionamento.';
-
-/** URL para imagem servida a partir de `public/` (respeita `base` do Vite). */
 export function winePublicImageSrc(fileName: string): string {
   const trimmed = fileName.replace(/^\/+/, '');
   const base = import.meta.env.BASE_URL || '/';
@@ -51,282 +39,479 @@ export const WINES: WineProduct[] = [
     id: '1',
     slug: 'potre-branco',
     image: 'Potre White Blend - Meio Seco.png',
-    name: 'Potre Branco',
-    varietal: 'Branco',
+    name: 'Potre White Blend',
+    varietal: 'Branco · Meio seco · White blend',
     cats: ['branco', 'blend'],
     tag: 'Branco',
     star: false,
-    rows: [
-      ['Linha', 'Potre'],
-      ['Variedade', 'Blend de uvas brancas'],
-      ['Vinhedo', 'Vale Central, Mendoza'],
-      ['Origem', 'Argentina'],
+    cardRows: [
+      ['Linha', 'Potre · Sunshine Edition'],
+      ['Região', 'Vale Central — Mendoza'],
+      ['Uvas', 'Chardonnay, Sauvignon Blanc, Chenin blanc'],
+      ['Apresentação', 'Meio seco'],
     ],
-    elaboration: ELAB_POTRE_BASE,
+    headline:
+      'Excelente opção para serviço em taça e cartas de vinho que buscam rótulos leves, aromáticos e versáteis.',
+    rows: [
+      ['Linha', 'Potre · Sunshine Edition'],
+      ['Apresentação', 'Meio seco'],
+      ['Uvas', 'Chardonnay, Sauvignon Blanc e Chenin blanc'],
+      ['Região', 'Vale Central — Mendoza'],
+      ['País', 'Argentina'],
+      ['Volume', '750 ml'],
+      ['Estilo', 'Branco leve, aromático e refrescante'],
+      ['Temperatura de serviço', '8 – 10 °C'],
+      ['Referência', 'Catálogo 2026'],
+    ],
+    elaboration:
+      'Fermentação em tanques de aço inoxidável com controle de temperatura, preservando os aromas primários das uvas e mantendo o frescor do vinho.',
     tastingNotes:
-      'Límpido e brilhante, com coloração amarelo-esverdeada. Aromas sutis, frescos e frutados. Na boca, entrada suave, corpo médio e final agradável.',
+      'De coloração amarelo-palha brilhante. No nariz apresenta aromas de frutas cítricas e tropicais, como lima, abacaxi e pêssego, combinados com delicadas notas florais. Em boca é leve, fresco e equilibrado, com acidez agradável e final refrescante.',
+    pairing:
+      'Saladas frescas, peixes grelhados, frutos do mar, ceviche, sushi e pratos leves da culinária mediterrânea.',
   },
   {
     id: '2',
     slug: 'potre-rose',
     image: 'Potre Rosé - Suave.png',
     name: 'Potre Rosé',
-    varietal: 'Rosé',
+    varietal: 'Rosé · Suave · Blend',
     cats: ['rose', 'blend'],
     tag: 'Rosé',
     star: false,
-    rows: [
-      ['Linha', 'Potre'],
-      ['Variedade', 'Blend de uvas tintas'],
-      ['Vinhedo', 'Vale Central, Mendoza'],
-      ['Origem', 'Argentina'],
+    cardRows: [
+      ['Linha', 'Potre · Sunshine Edition'],
+      ['Região', 'Vale Central — Mendoza'],
+      ['Uvas', 'Pedro Giménez, Ugni blanc, Tempranillo'],
+      ['Apresentação', 'Suave'],
     ],
-    elaboration: ELAB_POTRE_BASE,
+    headline:
+      'Rosé versátil e moderno, excelente para consumo descontraído e serviço em taça.',
+    rows: [
+      ['Linha', 'Potre · Sunshine Edition'],
+      ['Apresentação', 'Suave'],
+      ['Uvas', 'Pedro Giménez, Ugni blanc e Tempranillo'],
+      ['Região', 'Vale Central — Mendoza'],
+      ['País', 'Argentina'],
+      ['Volume', '750 ml'],
+      ['Estilo', 'Rosé fresco, suave, levemente adocicado, frutado e fácil de beber'],
+      ['Temperatura de serviço', '8 – 10 °C'],
+      ['Referência', 'Catálogo 2026'],
+    ],
+    elaboration:
+      'Elaborado por prensagem suave das uvas, com fermentação em tanques de aço inoxidável em temperatura controlada, preservando frescor e expressão aromática.',
     tastingNotes:
-      'Coloração rosada com tons brilhantes. Aroma fresco, frutado e harmônico, com boa expressão. Na boca, corpo dócil e retrogosto doce e agradável.',
+      'Apresenta coloração rosé delicada e brilhante. No nariz revela aromas de morango fresco, framboesa e sutis notas florais. Em boca é leve, refrescante e equilibrado, com boa acidez e final frutado.',
+    pairing:
+      'Entradas leves, saladas, carpaccio, frutos do mar, sushi, culinária mediterrânea e pratos leves à base de aves.',
   },
   {
     id: '3',
     slug: 'potre-malbec',
     image: 'Potre Malbec.png',
     name: 'Potre Malbec',
-    varietal: 'Tinto',
-    cats: ['tinto', 'blend'],
+    varietal: 'Tinto · 100% Malbec',
+    cats: ['tinto'],
     tag: 'Tinto',
     star: true,
-    rows: [
-      ['Linha', 'Potre'],
-      ['Variedade', 'Blend de uvas tintas'],
-      ['Vinhedo', 'Vale Central, Mendoza'],
+    cardRows: [
+      ['Linha', 'Potre · Sunshine Edition'],
+      ['Região', 'Vale Central — Mendoza'],
+      ['Castas', '100% Malbec'],
       ['Safra', '2023'],
-      ['Origem', 'Argentina'],
     ],
-    awards: 'Medalha de ouro — Gilbert & Gaillard International Challenge 2023 (safra 2023).',
-    elaboration: ELAB_POTRE_BASE,
+    headline:
+      'Malbec versátil e muito gastronômico, excelente opção para cartas de vinho e serviço em taça.',
+    rows: [
+      ['Linha', 'Potre · Sunshine Edition'],
+      ['Uvas', '100% Malbec'],
+      ['Região', 'Vale Central — Mendoza'],
+      ['País', 'Argentina'],
+      ['Safra', '2023'],
+      ['Volume', '750 ml'],
+      ['Estilo', 'Tinto de médio corpo, frutado e macio'],
+      ['Temperatura de serviço', '16 – 18 °C'],
+      ['Referência', 'Catálogo 2026'],
+    ],
+    awards:
+      'Safra 2023: medalha de ouro — Gilbert & Gaillard International Challenge 2023.',
+    elaboration:
+      'Fermentação em tanques de aço inoxidável com controle de temperatura, preservando a expressão frutada característica da variedade.',
     tastingNotes:
-      'Violeta-tinto intenso. Aromas frutados com presença marcada de cerejas e ameixas. Na boca, entrada agradável, boa estrutura, taninos suaves, muito equilibrado e final longo.',
+      'Apresenta coloração rubi profunda. No nariz revela aromas intensos de ameixa madura, cereja negra e delicadas notas florais. Em boca é equilibrado, com taninos macios, boa estrutura e final persistente.',
+    pairing:
+      'Carnes grelhadas, empanadas argentinas, massas com ragù, risotos e queijos curados.',
   },
   {
     id: '4',
     slug: 'potre-cabernet-sauvignon',
     image: 'Potre Cabernet Sauvignon.png',
     name: 'Potre Cabernet Sauvignon',
-    varietal: 'Tinto',
-    cats: ['tinto', 'blend'],
+    varietal: 'Tinto · 100% Cabernet Sauvignon',
+    cats: ['tinto'],
     tag: 'Tinto',
     star: true,
-    rows: [
-      ['Linha', 'Potre'],
-      ['Variedade', 'Blend de uvas tintas'],
-      ['Vinhedo', 'Vale Central, Mendoza'],
+    cardRows: [
+      ['Linha', 'Potre · Sunshine Edition'],
+      ['Região', 'Vale Central — Mendoza'],
+      ['Castas', '100% Cabernet Sauvignon'],
       ['Safra', '2023'],
-      ['Origem', 'Argentina'],
+    ],
+    headline:
+      'Excelente vinho para o dia a dia e ótima opção para restaurantes que buscam tintos versáteis e de fácil aceitação.',
+    rows: [
+      ['Linha', 'Potre · Sunshine Edition'],
+      ['Uvas', '100% Cabernet Sauvignon'],
+      ['Região', 'Vale Central — Mendoza'],
+      ['País', 'Argentina'],
+      ['Safra', '2023'],
+      ['Volume', '750 ml'],
+      ['Estilo', 'Tinto jovem, frutado e fácil de beber'],
+      ['Temperatura de serviço', '16 – 18 °C'],
+      ['Referência', 'Catálogo 2026'],
     ],
     awards:
-      'Medalha de ouro duplo — Gilbert & Gaillard International Challenge 2023 (safra 2023).',
-    elaboration: ELAB_POTRE_BASE,
+      'Safra 2023: medalha de ouro duplo — Gilbert & Gaillard International Challenge 2023.',
+    elaboration:
+      'Fermentação em tanques de aço inoxidável com controle de temperatura, buscando preservar a pureza da fruta e a suavidade dos taninos.',
     tastingNotes:
-      'Rubi brilhante. Aromas de frutas vermelhas e especiarias como pimenta. No paladar, muito equilibrado, com taninos doces e persistentes.',
+      'De coloração rubi intensa. No nariz apresenta aromas de frutas vermelhas maduras, como cereja e ameixa, acompanhadas por leves notas de especiarias e pirazina. Em boca é equilibrado, macio e agradável, com taninos suaves e final frutado.',
+    pairing:
+      'Massas com molho de tomate, pizzas, carnes grelhadas, hambúrguer artesanal e queijos semiduros.',
   },
   {
     id: '5',
     slug: 'malbec-reserva',
     image: 'Potre Malbec Reserva.png',
     name: 'Potre Malbec Reserva',
-    varietal: 'Tinto · Reserva',
+    varietal: 'Tinto · Reserva · 100% Malbec',
     cats: ['tinto', 'reserva'],
     tag: 'Reserva',
     star: true,
+    cardRows: [
+      ['Linha', 'Potre Reserva'],
+      ['Região', 'Vale Central — Mendoza'],
+      ['Castas', '100% Malbec'],
+      ['Safra', '2020'],
+    ],
+    headline:
+      'Rótulo ideal para cartas de vinho que buscam um Malbec mais estruturado e gastronômico com um bom custo-benefício.',
     rows: [
       ['Linha', 'Potre Reserva'],
-      ['Variedade', '100% Malbec'],
-      ['Vinhedo', 'Vale Central, Mendoza'],
+      ['Uvas', '100% Malbec'],
+      ['Região', 'Vale Central — Mendoza'],
+      ['País', 'Argentina'],
       ['Safra', '2020'],
-      ['Origem', 'Argentina'],
+      ['Volume', '750 ml'],
+      ['Barrica', '8 meses em carvalho francês'],
+      ['Estilo', 'Tinto macio, encorpado e estruturado'],
+      ['Temperatura de serviço', '16 – 18 °C'],
+      ['Referência', 'Catálogo 2026'],
     ],
     awards:
-      'Medalha de ouro — Gilbert & Gaillard International Challenge 2022 (safra 2020).',
+      'Safra 2020: medalha de ouro — Gilbert & Gaillard International Challenge 2022 (safra 2020).',
     elaboration:
-      'Colheita manual, desengace e maceração a frio, prensagem, fermentação com temperatura controlada em tanques de inox com leveduras selecionadas, fermentação malolática natural, estágio por 8 meses em barricas francesas de segundo uso, filtração e fracionamento.',
+      'Colheita manual, desengace e maceração a frio, prensagem e fermentação com temperatura controlada em tanques de inox com leveduras selecionadas, fermentação malolática natural. Estágio por 8 meses em barricas de carvalho francês de segundo uso, agregando complexidade aromática e maior estrutura. Filtração e fracionamento.',
     tastingNotes:
-      'Violeta com tons azuis intensos. Nariz com combinação de ameixas e morangos e notas de chocolate e baunilha vindas do carvalho. Paladar equilibrado e sedoso, com final persistente.',
+      'De coloração rubi intensa. No nariz apresenta aromas de frutas negras maduras, como ameixa e amora, combinados com notas de chocolate, especiarias e sutis toques de baunilha provenientes da passagem por barrica. Em boca é estruturado, elegante e com taninos bem integrados.',
+    pairing:
+      'Carnes assadas, cordeiro, pratos com molhos intensos, massas com ragù e queijos maturados.',
   },
   {
     id: '6',
     slug: 'cabernet-franc-reserva',
     image: 'Potre Cabernet Franc Reserva.png',
     name: 'Potre Cabernet Franc Reserva',
-    varietal: 'Tinto · Reserva',
+    varietal: 'Tinto · Reserva · 100% Cabernet Franc',
     cats: ['tinto', 'reserva'],
     tag: 'Reserva',
     star: true,
+    cardRows: [
+      ['Linha', 'Potre Reserva'],
+      ['Região', 'Vale do Uco — Mendoza'],
+      ['Castas', '100% Cabernet Franc'],
+      ['Estágio', '8 meses em carvalho francês'],
+    ],
+    headline:
+      'Cabernet Franc elegante e versátil, excelente para cartas de vinho que buscam rótulos diferenciados e gastronômicos.',
     rows: [
       ['Linha', 'Potre Reserva'],
-      ['Variedade', '100% Cabernet Franc'],
-      ['Área', 'Vale do Uco, Mendoza'],
-      ['Origem', 'Argentina'],
+      ['Uvas', '100% Cabernet Franc'],
+      ['Região', 'Vale do Uco — Mendoza'],
+      ['País', 'Argentina'],
+      ['Volume', '750 ml'],
+      ['Barrica', '8 meses em carvalho francês'],
+      ['Estilo', 'Tinto elegante, estruturado e gastronômico'],
+      ['Temperatura de serviço', '16 – 18 °C'],
+      ['Referência', 'Catálogo 2026'],
     ],
     elaboration:
-      'Colheita manual, seleção de cachos e bagas, desengace, maceração pré-fermentativa a frio por 3 dias a 5 °C, fermentação por 10 dias com temperatura controlada, remontagens diárias e delestage, fermentação malolática, estágio por 8 meses em barricas francesas de segundo uso, estabilização e engarrafamento.',
+      'Colheita manual, seleção de cachos e bagas, desengace, maceração pré-fermentativa a frio, fermentação com temperatura controlada, remontagens e delestage, fermentação malolática. Estágio por 8 meses em barricas de carvalho francês, agregando complexidade aromática e maior estrutura. Estabilização e engarrafamento.',
     tastingNotes:
-      'Vermelho-rubi profundo. Grande intensidade aromática e tipicidade varietal, com notas que lembram pimenta, eucalipto e especiarias. Entrada doce e suave, taninos redondos e maduros.',
+      'Apresenta coloração rubi intensa. No nariz revela aromas de frutas vermelhas maduras, como framboesa e cereja, combinados com notas de pimenta, eucalipto e especiarias, com leve toque tostado. Em boca é elegante, equilibrado e com taninos macios, boa estrutura e final persistente.',
+    pairing:
+      'Carnes assadas, cordeiro, pratos com cogumelos, massas com ragù e queijos maturados.',
   },
   {
     id: '7',
     slug: 'cabernet-sauvignon-reserva',
     image: 'Potre Cabernet Sauvignon Reserva.png',
     name: 'Potre Cabernet Sauvignon Reserva',
-    varietal: 'Tinto · Reserva',
+    varietal: 'Tinto · Reserva · 100% Cabernet Sauvignon',
     cats: ['tinto', 'reserva'],
     tag: 'Reserva',
     star: true,
+    cardRows: [
+      ['Linha', 'Potre Reserva'],
+      ['Região', 'Barrancas, Maipú — Mendoza'],
+      ['Castas', '100% Cabernet Sauvignon'],
+      ['Estágio', 'Barrica americana + garrafa'],
+    ],
+    headline:
+      'Excelente escolha para cartas de vinho que buscam um Cabernet Sauvignon intenso e gastronômico.',
     rows: [
       ['Linha', 'Potre Reserva'],
-      ['Variedade', '100% Cabernet Sauvignon'],
-      ['Área', 'Barrancas, Maipú — Mendoza'],
-      ['Origem', 'Argentina'],
+      ['Uvas', '100% Cabernet Sauvignon'],
+      ['Região', 'Barrancas, Maipú — Mendoza'],
+      ['País', 'Argentina'],
+      ['Volume', '750 ml'],
+      ['Envelhecimento', '30% do blend: 8 meses em carvalho americano; 6 meses em garrafa'],
+      ['Estilo', 'Tinto estruturado e encorpado'],
+      ['Temperatura de serviço', '16 – 18 °C'],
+      ['Referência', 'Catálogo 2026'],
     ],
     elaboration:
-      'Colheita manual em filas, transferência para silos, recepção e desengace, fermentação em tanques de inox com leveduras selecionadas e temperatura controlada, extração alternada com bombeios, delestage e pisagem por 10 a 13 dias, blend, estabilização, filtração e engarrafamento. Envelhecimento: 30% do blend por 8 meses em barricas de carvalho americano; permanência de 6 meses em garrafa.',
+      '30% da mistura é envelhecida em barris de carvalho americano por 8 meses. Armazenado em garrafa por mais 6 meses. Vinificação com fermentação em inox, temperatura controlada, extração por bombeios, delestage e pisagem, blend, estabilização e filtração.',
     tastingNotes:
-      'Granada intenso, rico em aromas frutados com toques de especiarias e chocolate do tempo em carvalho. Paladar equilibrado e untuoso, com final persistente.',
+      'Apresenta coloração rubi profunda. No nariz revela aromas intensos de frutas negras maduras, como ameixa, acompanhados por notas de especiarias, pimenta-preta e sutis toques de chocolate e baunilha provenientes do carvalho. Em boca é estruturado, com taninos firmes e bem integrados, final longo e elegante.',
+    pairing:
+      'Carnes grelhadas, churrasco, cordeiro, massas com ragù e queijos curados.',
   },
   {
     id: '8',
     slug: 'chardonnay-reserva',
     image: 'Potre Chardonnay Reserva.png',
     name: 'Potre Chardonnay Reserva',
-    varietal: 'Branco · Reserva',
+    varietal: 'Branco · Reserva · 100% Chardonnay',
     cats: ['branco', 'reserva'],
     tag: 'Reserva',
     star: true,
+    cardRows: [
+      ['Linha', 'Potre Reserva'],
+      ['Região', 'Maipú — Mendoza'],
+      ['Castas', '100% Chardonnay'],
+      ['Estágio', 'Carvalho francês + garrafa'],
+    ],
+    headline:
+      'Excelente opção para restaurantes que buscam um Chardonnay mais estruturado e gastronômico para compor cartas de vinho.',
     rows: [
       ['Linha', 'Potre Reserva'],
-      ['Variedade', '100% Chardonnay'],
-      ['Área', 'Maipú — Mendoza'],
-      ['Origem', 'Argentina'],
+      ['Uvas', '100% Chardonnay'],
+      ['Região', 'Maipú — Mendoza'],
+      ['País', 'Argentina'],
+      ['Volume', '750 ml'],
+      ['Envelhecimento', '30% do blend: 4 meses em contacto com carvalho francês; 4 meses em garrafa'],
+      ['Estilo', 'Branco estruturado, elegante e gastronômico'],
+      ['Temperatura de serviço', '10 – 12 °C'],
+      ['Referência', 'Catálogo 2026'],
     ],
     elaboration:
-      'Colheita manual em filas, transferência para silos, recepção e desengace, fermentação em tanques de inox com leveduras selecionadas e temperatura controlada, estabilização, filtração e engarrafamento. Envelhecimento: 30% do blend em contato com carvalho francês por 4 meses; 4 meses de guarda em garrafa.',
+      '30% da mistura em contato com carvalho francês por um período de 4 meses. Armazenado em garrafa por mais 4 meses. Fermentação em tanques de inox com leveduras selecionadas e temperatura controlada, estabilização e filtração.',
     tastingNotes:
-      'Amarelo com reflexos esverdeados. Maçã verde e frutas tropicais em equilíbrio com nota suave de baunilha do carvalho. Doce e untuoso, bem equilibrado pela acidez, com fruta, baunilha e tostado leve e final longo.',
+      'De coloração amarelo-palha com reflexos dourados. No nariz apresenta aromas elegantes de frutas tropicais maduras, como abacaxi e manga, combinados com notas de pêssego, baunilha e sutis toques tostados provenientes da passagem por carvalho francês. Em boca é estruturado, cremoso e equilibrado, com boa acidez e final persistente.',
+    pairing:
+      'Peixes grelhados, frutos do mar, massas com molho branco, risotos cremosos, aves assadas e pratos com cogumelos.',
   },
   {
     id: '9',
     slug: 'pato-criollo-red-blend',
     image: 'Pato Criollo Red Blend - Meio Seco.png',
     name: 'Pato Criollo Red Blend',
-    varietal: 'Blend · Tinto',
+    varietal: 'Tinto · Meio seco · Blend',
     cats: ['blend', 'tinto'],
     tag: 'Blend',
     star: false,
-    rows: [
+    cardRows: [
       ['Linha', 'Pato Criollo'],
-      ['Uvas', 'Bonarda, Malbec, Cabernet Sauvignon'],
-      ['Origem', 'Mendoza, Argentina'],
+      ['Região', 'Primeira Zona — Mendoza'],
+      ['Corte', 'Bonarda, Malbec, Cabernet Sauvignon'],
+      ['Safra', '2025'],
+    ],
+    headline:
+      'Rótulo de excelente giro, ideal para consumo casual e cartas de vinho acessíveis.',
+    rows: [
+      ['Linha', 'Pato Criollo · Edición Especial'],
+      ['Apresentação', 'Meio seco'],
+      ['Uvas', 'Bonarda, Malbec e Cabernet Sauvignon'],
+      ['Região', 'Primeira Zona — Mendoza'],
+      ['País', 'Argentina'],
       ['Safra', '2025'],
       ['Teor alcoólico', '12,5%'],
+      ['Volume', '750 ml'],
+      ['Estilo', 'Tinto leve a médio corpo, frutado e acessível'],
+      ['Temperatura de serviço', '16 – 18 °C'],
+      ['Referência', 'Catálogo 2026'],
     ],
-    elaboration: ELAB_PATO_BASE,
+    elaboration:
+      'Colheita manual das uvas, seguida de fermentação em tanques de aço inoxidável com controle de temperatura e leveduras selecionadas, preservando frescor e expressão aromática.',
     tastingNotes:
-      'Rubi brilhante de intensidade média. Nariz sutil e fresco, com frutas vermelhas maduras. Entrada limpa e suave, sabor frutado bem definido e persistência agradável. Perfil equilibrado e acessível.',
-    pairing:
-      'Massas ao sugo, lasanha, carnes grelhadas ou tábua de queijos semicurados.',
+      'De coloração vermelho-rubi brilhante. No nariz apresenta aromas de frutas vermelhas maduras com leve toque de especiarias. Em boca é macio, equilibrado e fácil de beber, com taninos suaves e final agradável.',
+    pairing: 'Massas ao molho vermelho, carnes grelhadas, lasanhas e tábuas de queijos.',
   },
   {
     id: '10',
     slug: 'pato-criollo-white-blend',
     image: 'Pato Criollo White Blend - Meio Seco.png',
     name: 'Pato Criollo White Blend',
-    varietal: 'Blend · Branco',
+    varietal: 'Branco · Meio seco · Blend',
     cats: ['blend', 'branco'],
     tag: 'Blend',
     star: false,
-    rows: [
+    cardRows: [
       ['Linha', 'Pato Criollo'],
-      ['Uvas', 'Torrontés, Sauvignon Blanc, Chenin Blanc'],
-      ['Origem', 'Mendoza, Argentina'],
+      ['Região', 'Primeira Zona — Mendoza'],
+      ['Corte', 'Torrontés, Sauvignon Blanc, Chenin blanc'],
+      ['Safra', '2025'],
+    ],
+    headline:
+      'Vinho extremamente versátil e moderno, ideal para serviço em taça com alta aceitação do público.',
+    rows: [
+      ['Linha', 'Pato Criollo · Edición Especial'],
+      ['Apresentação', 'Meio seco'],
+      ['Uvas', 'Torrontés, Sauvignon Blanc e Chenin blanc'],
+      ['Região', 'Primeira Zona — Mendoza'],
+      ['País', 'Argentina'],
       ['Safra', '2025'],
       ['Teor alcoólico', '12%'],
+      ['Volume', '750 ml'],
+      ['Estilo', 'Branco leve, aromático e refrescante'],
+      ['Temperatura de serviço', '8 – 10 °C'],
+      ['Referência', 'Catálogo 2026'],
     ],
-    elaboration: ELAB_PATO_BASE,
+    elaboration:
+      'Colheita manual das uvas, seguida de fermentação em tanques de aço inoxidável com controle de temperatura e leveduras selecionadas, preservando frescor e expressão aromática.',
     tastingNotes:
-      'Amarelo-esverdeado brilhante de intensidade média. Aromas florais delicados e fruta fresca. Boca vibrante, acidez marcante e notas cítricas, com final refrescante e persistente.',
-    pairing:
-      'Saladas com frutas tropicais, ceviche, moquecas leves ou queijos frescos como minas.',
+      'Apresenta coloração amarelo-esverdeada brilhante. No nariz revela notas florais delicadas combinadas com aromas de frutas frescas e cítricas. Em boca é leve, elegante e refrescante, com acidez vibrante e final persistente.',
+    pairing: 'Saladas com frutas, ceviche, frutos do mar, queijos frescos e pratos leves.',
   },
   {
     id: '11',
     slug: 'dons-da-terra-tinto',
     image: 'Dons da Terra Tinto – Meio Seco.png',
     name: 'Dons da Terra Tinto',
-    varietal: 'Tinto',
+    varietal: 'Tinto · Meio seco',
     cats: ['tinto'],
     tag: 'Tinto',
     star: false,
-    rows: [
+    cardRows: [
       ['Linha', 'Dons da Terra'],
-      ['Classificação', 'Vinho Regional Alentejano'],
+      ['Região', 'Redondo — Alentejo'],
       ['Uvas', 'Castelão, Trincadeira, Aragonez'],
       ['Colheita', '2024'],
-      ['Capacidade', '750 ml'],
-      ['Teor alcoólico', '13%'],
+    ],
+    headline:
+      'Vinho de excelente aceitação, ideal para consumo casual e ótima opção para giro em restaurante.',
+    rows: [
+      ['Linha', 'Dons da Terra'],
+      ['Apresentação', 'Meio seco'],
+      ['Classificação', 'Vinho Regional Alentejano'],
+      ['Uvas', 'Castelão, Trincadeira e Aragonez'],
+      ['Região', 'Redondo — Alentejo'],
+      ['País', 'Portugal'],
+      ['Colheita', '2024'],
+      ['Volume', '750 ml'],
+      ['Teor alcoólico', '13,5%'],
       ['Produtor', 'Adega de Redondo'],
       ['Solos', 'Principalmente graníticos; argilo-calcários e xisto'],
+      ['Estilo', 'Tinto jovem, macio e frutado'],
+      ['Temperatura de serviço', '16 – 18 °C'],
+      ['Referência', 'Catálogo 2026'],
     ],
-    elaboration: ELAB_DONS_BASE,
+    elaboration:
+      'Colheita manual das uvas, seguida de fermentação em tanques de aço inoxidável com controle de temperatura e leveduras selecionadas, preservando frescor e expressão aromática.',
     tastingNotes:
-      'Tinto rubi intenso com a essência do Alentejo. Aromas de frutos silvestres, especiarias e tabaco. Na boca, sabor agradável, taninos macios e boa estrutura, com final persistente.',
+      'De coloração rubi intensa. No nariz apresenta aromas de frutos silvestres e frutas vermelhas maduras. Em boca é macio, equilibrado e envolvente, com taninos redondos, boa estrutura e final persistente.',
     pairing:
-      'Versátil e gastronômico: carnes, massas e queijos de intensidade média.',
+      'Massas com molho de tomate, carnes grelhadas, pizzas e queijos semiduros.',
   },
   {
     id: '12',
     slug: 'dons-da-terra-rose',
     image: 'Dons da Terra Rosé – Meio Seco.png',
     name: 'Dons da Terra Rosé',
-    varietal: 'Rosé',
+    varietal: 'Rosé · Meio seco',
     cats: ['rose'],
     tag: 'Rosé',
     star: false,
+    cardRows: [
+      ['Linha', 'Dons da Terra'],
+      ['Região', 'Redondo — Alentejo'],
+      ['Uvas', 'Aragonez, Castelão'],
+      ['Colheita', '2024'],
+    ],
+    headline:
+      'Rosé fácil de agradar, ideal para consumo descontraído e excelente para serviço em taça.',
     rows: [
       ['Linha', 'Dons da Terra'],
+      ['Apresentação', 'Meio seco'],
       ['Classificação', 'Vinho Regional Alentejano'],
-      ['Uvas', 'Castelão, Aragonez'],
+      ['Uvas', 'Aragonez e Castelão'],
+      ['Região', 'Redondo — Alentejo'],
+      ['País', 'Portugal'],
       ['Colheita', '2024'],
-      ['Capacidade', '750 ml'],
+      ['Volume', '750 ml'],
       ['Teor alcoólico', '12,5%'],
       ['Produtor', 'Adega de Redondo'],
       ['Solos', 'Principalmente graníticos; argilo-calcários e xisto'],
+      ['Estilo', 'Rosé leve, fresco e frutado'],
+      ['Temperatura de serviço', '8 – 10 °C'],
+      ['Referência', 'Catálogo 2026'],
     ],
-    elaboration: ELAB_DONS_BASE,
+    elaboration:
+      'Colheita manual das uvas, maceração pré-fermentativa seguida de fermentação em temperatura controlada, preservando frescor e delicadeza aromática.',
     tastingNotes:
-      'Rosé fresco e vibrante, com cor sutil. Aromas delicados de cereja, framboesa e lichia. Paladar marcado pela frescura e persistência, com final agradável.',
-    pairing: 'Entradas, frutos do mar e peixes.',
+      'Apresenta coloração rosa-claro e brilhante. No nariz revela notas de cereja, nuances de lichia e fruta tropical, leve floral. Em boca é fresco, equilibrado e com agradável persistência.',
+    pairing:
+      'Saladas, frutos do mar, peixes leves, culinária mediterrânea e pratos leves de verão.',
   },
   {
     id: '13',
     slug: 'dons-da-terra-branco',
     image: 'Dons da Terra White Blend - Seco.png',
-    name: 'Dons da Terra Branco',
-    varietal: 'Branco',
+    name: 'Dons da Terra White Blend',
+    varietal: 'Branco · Seco · Blend',
     cats: ['branco'],
     tag: 'Branco',
     star: false,
-    rows: [
+    cardRows: [
       ['Linha', 'Dons da Terra'],
-      ['Classificação', 'Vinho Regional Alentejano'],
+      ['Região', 'Redondo — Alentejo'],
       ['Uvas', 'Roupeiro, Fernão Pires, Arinto'],
       ['Colheita', '2024'],
-      ['Capacidade', '750 ml'],
+    ],
+    headline:
+      'Branco versátil e refrescante, excelente opção para consumo diário e alta rotatividade.',
+    rows: [
+      ['Linha', 'Dons da Terra'],
+      ['Apresentação', 'Seco'],
+      ['Classificação', 'Vinho Regional Alentejano'],
+      ['Uvas', 'Roupeiro, Fernão Pires e Arinto'],
+      ['Região', 'Redondo — Alentejo'],
+      ['País', 'Portugal'],
+      ['Colheita', '2024'],
+      ['Volume', '750 ml'],
       ['Teor alcoólico', '12,5%'],
       ['Produtor', 'Adega de Redondo'],
       ['Solos', 'Principalmente graníticos; argilo-calcários e xisto'],
+      ['Estilo', 'Branco leve, fresco e aromático'],
+      ['Temperatura de serviço', '8 – 10 °C'],
+      ['Referência', 'Catálogo 2026'],
     ],
-    elaboration: ELAB_DONS_BASE,
+    elaboration:
+      'Colheita manual das uvas, seguida de fermentação em tanques de aço inoxidável com controle de temperatura e leveduras selecionadas, preservando frescor e expressão aromática.',
     tastingNotes:
-      'Refrescante e equilibrado. Amarelo-esverdeado brilhante. Aromas de flores brancas, frutas tropicais, maçã verde intensa e limão. Boca harmoniosa, mineralidade sutil, fresca e cheia de vivacidade.',
-    pairing: 'Peixes, frutos do mar e saladas.',
+      'De coloração citrina e brilhante. No nariz apresenta aromas intensos de frutas tropicais com nuances cítricas. Em boca é fresco, equilibrado e vibrante, com final harmonioso e persistente.',
+    pairing: 'Peixes, frutos do mar, saladas, petiscos e pratos leves.',
   },
 ];
 
@@ -336,7 +521,6 @@ export function getWineBySlug(slug: string | undefined): WineProduct | undefined
   return WINES.find((w) => w.slug === normalized);
 }
 
-/** Compat: URLs antigas só com id numérico ainda resolvem o vinho. */
 export function getWineByRouteParam(param: string | undefined): WineProduct | undefined {
   if (!param) return undefined;
   const bySlug = getWineBySlug(param);

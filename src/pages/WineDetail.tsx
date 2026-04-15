@@ -53,6 +53,9 @@ const WineDetail = () => {
           </div>
           <h1 className="santi-title santi-wine-title">{wine.name}</h1>
           <p className="santi-card__var santi-wine-var">{wine.varietal}</p>
+          {wine.headline ? (
+            <p className="santi-wine-headline">{wine.headline}</p>
+          ) : null}
           {wine.awards ? (
             <p className="santi-wine-awards">{wine.awards}</p>
           ) : null}
@@ -86,13 +89,13 @@ const WineDetail = () => {
           <section className="santi-wine-panel">
             {wine.elaboration ? (
               <>
-                <h2 className="santi-eyebrow">Elaboração</h2>
+                <h2 className="santi-eyebrow">Vinificação e estágio</h2>
                 <p className="santi-wine-copy">{wine.elaboration}</p>
               </>
             ) : null}
             {wine.tastingNotes ? (
               <>
-                <h2 className="santi-eyebrow">Notas de degustação</h2>
+                <h2 className="santi-eyebrow">Perfil sensorial</h2>
                 <p className="santi-wine-copy">{wine.tastingNotes}</p>
               </>
             ) : null}
