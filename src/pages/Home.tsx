@@ -7,6 +7,9 @@ import './santi-home.css';
 
 const base = import.meta.env.BASE_URL || '/';
 
+/** Catálogo em `public/` — 2026 (nome do ficheiro no disco). */
+const CATALOG_PDF_FILE = 'Catálogo Santi Santi - 2026 - FINAL Alta.pdf';
+
 /** POST do formulário de contacto (respeita `base` do Vite em produção). */
 const CONTACT_API_URL = `${(import.meta.env.BASE_URL || '/').replace(/\/?$/, '')}/api/contact`.replace(
   /([^:])\/{2,}/g,
@@ -370,8 +373,8 @@ const Home = () => {
             </a>
             <a
               className="santi-btn-pill"
-              href={`${base}${encodeURIComponent('SantiSanti_-1.pdf')}`}
-              download="SantiSanti-catalogo.pdf"
+              href={`${base}${encodeURIComponent(CATALOG_PDF_FILE)}`}
+              download="Santi-Santi-Catalogo-2026.pdf"
             >
               Baixar catálogo
             </a>
