@@ -158,7 +158,6 @@ const Home = () => {
               <p className="santi-hero__float-title">Seleção 2026</p>
               <p>Potre · Pato Criollo · Dons da Terra</p>
             </div>
-            <p className="santi-hero__scroll">Scroll</p>
           </div>
         </div>
       </section>
@@ -319,9 +318,17 @@ const Home = () => {
                 >
                   <div className="santi-card__top">
                     <span className="santi-card__tag">{p.tag}</span>
-                    <span className="santi-card__badge" aria-hidden={!p.star}>
-                      {p.star ? '★' : ''}
-                    </span>
+                    <div
+                      className="santi-card__stars"
+                      role="img"
+                      aria-label="Avaliação: 5 de 5 estrelas"
+                    >
+                      {[0, 1, 2, 3, 4].map((i) => (
+                        <span key={i} className="santi-card__star" aria-hidden>
+                          ★
+                        </span>
+                      ))}
+                    </div>
                   </div>
                   <div
                     className={`santi-card__visual${p.image ? ' santi-card__visual--bottle' : ''}`}
@@ -351,11 +358,6 @@ const Home = () => {
                     <span className="santi-card__link">
                       Ver ficha <span aria-hidden>→</span>
                     </span>
-                    <div className="santi-rating" aria-label="Avaliação">
-                      {[0, 1, 2, 3, 4].map((i) => (
-                        <span key={i} />
-                      ))}
-                    </div>
                   </div>
                 </Link>
               );
