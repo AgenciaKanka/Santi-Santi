@@ -1,11 +1,17 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties, FormEvent } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FooterSocial } from '../components/FooterSocial';
-import { FILTERS, WINES } from '../data/wines';
+import { FILTERS, WINES, winePublicImageSrc } from '../data/wines';
 import './santi-home.css';
 
 const base = import.meta.env.BASE_URL || '/';
+
+/** POST do formulário de contacto (respeita `base` do Vite em produção). */
+const CONTACT_API_URL = `${(import.meta.env.BASE_URL || '/').replace(/\/?$/, '')}/api/contact`.replace(
+  /([^:])\/{2,}/g,
+  '$1/',
+);
 
 /** Arquivos em /public — ordem de exibição no carrossel */
 const CAROUSEL_FILES = [
@@ -29,6 +35,10 @@ const CAROUSEL_VISIBLE = 3;
 
 const Home = () => {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]['id']>('todos');
+  const [contactSubmit, setContactSubmit] = useState<
+    'idle' | 'loading' | 'success' | 'error'
+  >('idle');
+  const [contactFeedback, setContactFeedback] = useState('');
   const [carouselIndex, setCarouselIndex] = useState(0);
   const carouselLen = CAROUSEL_SLIDES.length;
   const carouselMaxIndex = Math.max(0, carouselLen - CAROUSEL_VISIBLE);
@@ -46,6 +56,52 @@ const Home = () => {
     setCarouselIndex((i) => (i <= 0 ? carouselMaxIndex : i - 1));
   const goNext = () =>
     setCarouselIndex((i) => (i >= carouselMaxIndex ? 0 : i + 1));
+
+  const handleContactSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const nome = String(fd.get('nome') ?? '').trim();
+    const email = String(fd.get('email') ?? '').trim();
+    const telefone = String(fd.get('telefone') ?? '').trim();
+    const mensagem = String(fd.get('mensagem') ?? '').trim();
+
+    setContactSubmit('loading');
+    setContactFeedback('');
+
+    try {
+      const res = await fetch(CONTACT_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, email, telefone, mensagem }),
+      });
+      let data: { ok?: boolean; message?: string } = {};
+      try {
+        data = await res.json();
+      } catch {
+        /* resposta não JSON */
+      }
+      if (!res.ok) {
+        setContactSubmit('error');
+        setContactFeedback(
+          typeof data.message === 'string'
+            ? data.message
+            : 'Não foi possível enviar a mensagem.',
+        );
+        return;
+      }
+      setContactSubmit('success');
+      setContactFeedback(
+        typeof data.message === 'string' ? data.message : 'Mensagem enviada.',
+      );
+      form.reset();
+    } catch {
+      setContactSubmit('error');
+      setContactFeedback(
+        'Não foi possível contactar o servidor. Inicie a API na pasta server (porta 3001) ou tente mais tarde.',
+      );
+    }
+  };
 
   const visibleIds = useMemo(() => {
     if (filter === 'todos') return null;
@@ -267,7 +323,20 @@ const Home = () => {
                       {p.star ? '★' : ''}
                     </span>
                   </div>
-                  <div className="santi-card__visual" aria-hidden />
+                  <div
+                    className={`santi-card__visual${p.image ? ' santi-card__visual--bottle' : ''}`}
+                    aria-hidden
+                  >
+                    {p.image ? (
+                      <img
+                        className="santi-card__bottle-img"
+                        src={winePublicImageSrc(p.image)}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : null}
+                  </div>
                   <h3 className="santi-card__name">{p.name}</h3>
                   <p className="santi-card__var">{p.varietal}</p>
                   <div className="santi-card__rows">
@@ -349,10 +418,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <form
-            className="santi-form"
-            onSubmit={(e) => e.preventDefault()}
-          >
+          <form className="santi-form" onSubmit={handleContactSubmit} noValidate>
             <div className="santi-form__grid">
               <div className="santi-form__span2">
                 <label htmlFor="nome">Nome</label>
@@ -362,6 +428,9 @@ const Home = () => {
                   type="text"
                   autoComplete="name"
                   placeholder="Nome completo"
+                  required
+                  maxLength={200}
+                  disabled={contactSubmit === 'loading'}
                 />
               </div>
               <div>
@@ -372,6 +441,9 @@ const Home = () => {
                   type="email"
                   autoComplete="email"
                   placeholder="nome@empresa.com.br"
+                  required
+                  maxLength={320}
+                  disabled={contactSubmit === 'loading'}
                 />
               </div>
               <div>
@@ -382,6 +454,8 @@ const Home = () => {
                   type="tel"
                   autoComplete="tel"
                   placeholder="(00) 00000-0000"
+                  maxLength={60}
+                  disabled={contactSubmit === 'loading'}
                 />
               </div>
             </div>
@@ -392,13 +466,28 @@ const Home = () => {
                 name="mensagem"
                 rows={5}
                 placeholder="Linhas de interesse, volumes, prazo para retorno…"
+                required
+                maxLength={8000}
+                disabled={contactSubmit === 'loading'}
               />
             </div>
             <p className="santi-form__note">
               Ao enviar, você concorda com o uso dos dados apenas para retorno
-              comercial, conforme nossa política de privacidade.
+              comercial, conforme nossa{' '}
+              <Link to="/privacidade">política de privacidade</Link>.
             </p>
-            <button type="submit">Enviar mensagem</button>
+            {contactFeedback ? (
+              <p
+                className={`santi-form__feedback${contactSubmit === 'success' ? ' santi-form__feedback--success' : ''}${contactSubmit === 'error' ? ' santi-form__feedback--error' : ''}`}
+                role="status"
+                aria-live="polite"
+              >
+                {contactFeedback}
+              </p>
+            ) : null}
+            <button type="submit" disabled={contactSubmit === 'loading'}>
+              {contactSubmit === 'loading' ? 'Enviando…' : 'Enviar mensagem'}
+            </button>
           </form>
         </div>
       </section>
@@ -409,9 +498,7 @@ const Home = () => {
           Distribuidora
         </span>
         <div className="santi-footer__links">
-          <a href="#top">Privacidade</a>
-          <a href="#top">Termos</a>
-          <a href="#contato">Contato</a>
+          <Link to="/privacidade">Privacidade</Link>
         </div>
         <FooterSocial />
       </footer>

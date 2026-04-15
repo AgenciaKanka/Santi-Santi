@@ -2,6 +2,8 @@ export type WineProduct = {
   id: string;
   /** URL amigável, ex.: cabernet-franc-reserva */
   slug: string;
+  /** Nome do ficheiro em `public/` (ex.: Potre Malbec.png) */
+  image?: string;
   name: string;
   varietal: string;
   cats: string[];
@@ -27,6 +29,14 @@ const ELAB_PATO_BASE =
 const ELAB_DONS_BASE =
   'Colheita manual das uvas, recepção e desengace, fermentação com temperatura controlada em tanques de inox com leveduras selecionadas, clarificação, filtração e fracionamento.';
 
+/** URL para imagem servida a partir de `public/` (respeita `base` do Vite). */
+export function winePublicImageSrc(fileName: string): string {
+  const trimmed = fileName.replace(/^\/+/, '');
+  const base = import.meta.env.BASE_URL || '/';
+  const prefix = base.endsWith('/') ? base : `${base}/`;
+  return `${prefix}${encodeURIComponent(trimmed)}`;
+}
+
 export const FILTERS = [
   { id: 'todos', label: 'Todos' },
   { id: 'tinto', label: 'Tintos' },
@@ -40,6 +50,7 @@ export const WINES: WineProduct[] = [
   {
     id: '1',
     slug: 'potre-branco',
+    image: 'Potre White Blend - Meio Seco.png',
     name: 'Potre Branco',
     varietal: 'Branco',
     cats: ['branco', 'blend'],
@@ -58,6 +69,7 @@ export const WINES: WineProduct[] = [
   {
     id: '2',
     slug: 'potre-rose',
+    image: 'Potre Rosé - Suave.png',
     name: 'Potre Rosé',
     varietal: 'Rosé',
     cats: ['rose', 'blend'],
@@ -76,6 +88,7 @@ export const WINES: WineProduct[] = [
   {
     id: '3',
     slug: 'potre-malbec',
+    image: 'Potre Malbec.png',
     name: 'Potre Malbec',
     varietal: 'Tinto',
     cats: ['tinto', 'blend'],
@@ -96,6 +109,7 @@ export const WINES: WineProduct[] = [
   {
     id: '4',
     slug: 'potre-cabernet-sauvignon',
+    image: 'Potre Cabernet Sauvignon.png',
     name: 'Potre Cabernet Sauvignon',
     varietal: 'Tinto',
     cats: ['tinto', 'blend'],
@@ -117,6 +131,7 @@ export const WINES: WineProduct[] = [
   {
     id: '5',
     slug: 'malbec-reserva',
+    image: 'Potre Malbec Reserva.png',
     name: 'Potre Malbec Reserva',
     varietal: 'Tinto · Reserva',
     cats: ['tinto', 'reserva'],
@@ -139,6 +154,7 @@ export const WINES: WineProduct[] = [
   {
     id: '6',
     slug: 'cabernet-franc-reserva',
+    image: 'Potre Cabernet Franc Reserva.png',
     name: 'Potre Cabernet Franc Reserva',
     varietal: 'Tinto · Reserva',
     cats: ['tinto', 'reserva'],
@@ -158,6 +174,7 @@ export const WINES: WineProduct[] = [
   {
     id: '7',
     slug: 'cabernet-sauvignon-reserva',
+    image: 'Potre Cabernet Sauvignon Reserva.png',
     name: 'Potre Cabernet Sauvignon Reserva',
     varietal: 'Tinto · Reserva',
     cats: ['tinto', 'reserva'],
@@ -177,6 +194,7 @@ export const WINES: WineProduct[] = [
   {
     id: '8',
     slug: 'chardonnay-reserva',
+    image: 'Potre Chardonnay Reserva.png',
     name: 'Potre Chardonnay Reserva',
     varietal: 'Branco · Reserva',
     cats: ['branco', 'reserva'],
@@ -196,6 +214,7 @@ export const WINES: WineProduct[] = [
   {
     id: '9',
     slug: 'pato-criollo-red-blend',
+    image: 'Pato Criollo Red Blend - Meio Seco.png',
     name: 'Pato Criollo Red Blend',
     varietal: 'Blend · Tinto',
     cats: ['blend', 'tinto'],
@@ -217,6 +236,7 @@ export const WINES: WineProduct[] = [
   {
     id: '10',
     slug: 'pato-criollo-white-blend',
+    image: 'Pato Criollo White Blend - Meio Seco.png',
     name: 'Pato Criollo White Blend',
     varietal: 'Blend · Branco',
     cats: ['blend', 'branco'],
@@ -238,6 +258,7 @@ export const WINES: WineProduct[] = [
   {
     id: '11',
     slug: 'dons-da-terra-tinto',
+    image: 'Dons da Terra Tinto – Meio Seco.png',
     name: 'Dons da Terra Tinto',
     varietal: 'Tinto',
     cats: ['tinto'],
@@ -262,6 +283,7 @@ export const WINES: WineProduct[] = [
   {
     id: '12',
     slug: 'dons-da-terra-rose',
+    image: 'Dons da Terra Rosé – Meio Seco.png',
     name: 'Dons da Terra Rosé',
     varietal: 'Rosé',
     cats: ['rose'],
@@ -285,6 +307,7 @@ export const WINES: WineProduct[] = [
   {
     id: '13',
     slug: 'dons-da-terra-branco',
+    image: 'Dons da Terra White Blend - Seco.png',
     name: 'Dons da Terra Branco',
     varietal: 'Branco',
     cats: ['branco'],

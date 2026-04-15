@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 // Load routes
 import authRoutes from './routes/auth.js';
 import uploadRoutes from './routes/upload.js';
+import contactRoutes from './routes/contact.js';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Static folders
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

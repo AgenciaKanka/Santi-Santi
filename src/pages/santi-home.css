@@ -626,6 +626,23 @@
   margin: 4px 0 12px;
 }
 
+.santi-card__visual--bottle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 248px;
+  margin: 8px 0 16px;
+}
+
+.santi-card__bottle-img {
+  max-height: 256px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.35));
+}
+
 .santi-card__name {
   font-family: "Cormorant Garamond", serif;
   font-size: 26px;
@@ -768,6 +785,67 @@
   outline-offset: 4px;
 }
 
+/* Política de privacidade / texto legal */
+.santi-legal-head {
+  margin-bottom: 32px;
+}
+
+.santi-legal {
+  max-width: 720px;
+  margin: 0;
+}
+
+.santi-legal__section {
+  margin-bottom: 40px;
+}
+
+.santi-legal__section:last-child {
+  margin-bottom: 0;
+}
+
+.santi-legal__h2 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(22px, 2.4vw, 28px);
+  font-weight: 400;
+  color: var(--gold);
+  margin: 0 0 16px;
+  line-height: 1.25;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.santi-legal p {
+  margin: 0 0 14px;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--gold-light);
+  font-weight: 300;
+}
+
+.santi-legal p:last-child {
+  margin-bottom: 0;
+}
+
+.santi-legal__notice {
+  font-size: 11px !important;
+  letter-spacing: 0.06em;
+  line-height: 1.7 !important;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  opacity: 0.95;
+}
+
+.santi-legal__link {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.santi-legal__link:hover {
+  color: #fff;
+}
+
 /* Página interna do vinho (sem cabeçalho fixo — alinhado à home) */
 .santi-wine-main {
   max-width: 920px;
@@ -867,6 +945,24 @@
   margin: 0 0 40px;
   border: 1px dashed var(--border);
   background: rgba(255, 255, 255, 0.02);
+}
+
+.santi-wine-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 312px;
+  margin: 0 0 40px;
+  border: none;
+  background: transparent;
+}
+
+.santi-wine-hero__img {
+  max-height: min(65vh, 580px);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 40px rgba(0, 0, 0, 0.4));
 }
 
 .santi-wine-grid {
@@ -1034,6 +1130,38 @@
   margin: 14px 0 20px;
 }
 
+.santi-home .santi-form__note a {
+  color: var(--gold-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.2s ease;
+}
+
+.santi-home .santi-form__note a:hover {
+  color: var(--gold);
+}
+
+.santi-form__feedback {
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+}
+
+.santi-form__feedback--success {
+  color: #b8e0c8;
+  border-color: rgba(120, 200, 150, 0.35);
+  background: rgba(80, 160, 110, 0.12);
+}
+
+.santi-form__feedback--error {
+  color: #f0c4c4;
+  border-color: rgba(220, 120, 120, 0.4);
+  background: rgba(180, 60, 60, 0.12);
+}
+
 .santi-form button[type="submit"] {
   width: 100%;
   padding: 16px;
@@ -1050,6 +1178,11 @@
 
 .santi-home .santi-form button[type="submit"] {
   color: var(--dark);
+}
+
+.santi-form button[type="submit"]:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .santi-form button[type="submit"]:hover {

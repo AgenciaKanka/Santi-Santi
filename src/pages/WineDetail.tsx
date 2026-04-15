@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useMemo } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { FooterSocial } from '../components/FooterSocial';
-import { getWineByRouteParam } from '../data/wines';
+import { getWineByRouteParam, winePublicImageSrc } from '../data/wines';
 import './santi-home.css';
 
 const WineDetail = () => {
@@ -58,7 +58,18 @@ const WineDetail = () => {
           ) : null}
         </div>
 
-        <div className="santi-card__visual santi-wine-placeholder" aria-hidden />
+        {wine.image ? (
+          <div className="santi-card__visual santi-wine-hero">
+            <img
+              className="santi-wine-hero__img"
+              src={winePublicImageSrc(wine.image)}
+              alt={wine.name}
+              decoding="async"
+            />
+          </div>
+        ) : (
+          <div className="santi-card__visual santi-wine-placeholder" aria-hidden />
+        )}
 
         <div className="santi-wine-grid">
           <section className="santi-wine-panel">
@@ -109,9 +120,7 @@ const WineDetail = () => {
           Distribuidora
         </span>
         <div className="santi-footer__links">
-          <Link to="/#top">Privacidade</Link>
-          <Link to="/#top">Termos</Link>
-          <Link to="/#contato">Contato</Link>
+          <Link to="/privacidade">Privacidade</Link>
         </div>
         <FooterSocial />
       </footer>
