@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useMemo } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
+import { FooterKankaLogo } from '../components/FooterKanka';
 import { FooterSocial } from '../components/FooterSocial';
 import { getWineByRouteParam, winePublicImageSrc } from '../data/wines';
 import './santi-home.css';
@@ -118,14 +119,17 @@ const WineDetail = () => {
       </main>
 
       <footer className="santi-footer">
-        <span>
-          © {new Date().getFullYear()} Santi &amp; Santi Importadora e
-          Distribuidora
-        </span>
-        <div className="santi-footer__links">
-          <Link to="/privacidade">Privacidade</Link>
+        <div className="santi-footer__row">
+          <span>
+            © {new Date().getFullYear()} Santi &amp; Santi Importadora e
+            Distribuidora
+          </span>
+          <div className="santi-footer__links">
+            <Link to="/privacidade">Privacidade</Link>
+          </div>
+          <FooterSocial />
         </div>
-        <FooterSocial />
+        <FooterKankaLogo />
       </footer>
     </div>
   );

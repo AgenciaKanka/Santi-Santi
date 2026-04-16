@@ -611,6 +611,15 @@
   color: var(--gold);
 }
 
+.santi-card__rating {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
 .santi-card__stars {
   display: flex;
   flex-wrap: nowrap;
@@ -641,6 +650,17 @@
   justify-content: center;
   min-height: 248px;
   margin: 8px 0 16px;
+}
+
+.santi-card__flag {
+  display: block;
+  width: 22px;
+  height: auto;
+  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
 .santi-card__bottle-img {
@@ -759,6 +779,11 @@
 .santi-products .santi-card__star {
   color: #111;
   font-size: 15px;
+}
+
+.santi-products .santi-card__flag {
+  border-color: rgba(10, 10, 10, 0.18);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 .santi-products .santi-card__name {
@@ -1147,6 +1172,12 @@
   flex-shrink: 0;
 }
 
+.santi-info-item__svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
 .santi-info-item strong {
   display: block;
   font-weight: 400;
@@ -1157,9 +1188,20 @@
   margin-bottom: 4px;
 }
 
-.santi-info-item span {
-  color: var(--muted);
+.santi-info-item > div span,
+.santi-info-item > div a {
+  color: #fff;
   font-size: 13px;
+}
+
+.santi-info-item > div a {
+  text-decoration: none;
+  border-bottom: none;
+  transition: color 0.2s ease;
+}
+
+.santi-info-item > div a:hover {
+  color: var(--gold-light);
 }
 
 .santi-form label {
@@ -1282,12 +1324,50 @@
   max-width: 1280px;
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.santi-footer__row {
+  display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  font-size: 12px;
-  color: var(--muted);
+  width: 100%;
+}
+
+.santi-footer__kanka {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 28px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.santi-footer__kanka-link {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+  opacity: 0.92;
+  transition: opacity 0.25s ease;
+}
+
+.santi-footer__kanka-link:hover {
+  opacity: 1;
+}
+
+.santi-footer__kanka img {
+  width: auto;
+  max-width: min(100%, 220px);
+  height: auto;
+  max-height: 22px;
+  object-fit: contain;
 }
 
 .santi-footer__links {
@@ -1458,13 +1538,23 @@
 
   .santi-footer {
     padding: 24px 24px 32px;
+    text-align: center;
+  }
+
+  .santi-footer__row {
     flex-direction: column;
+    justify-content: center;
     text-align: center;
   }
 
   .santi-footer__links {
     flex-wrap: wrap;
     justify-content: center;
+  }
+
+  .santi-footer__kanka {
+    margin-top: 24px;
+    padding-top: 24px;
   }
 
   .santi-wine-main {

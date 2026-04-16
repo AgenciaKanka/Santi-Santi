@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { FooterKankaLogo } from '../components/FooterKanka';
 import { FooterSocial } from '../components/FooterSocial';
 import './santi-home.css';
 
@@ -119,8 +120,8 @@ const PrivacyPolicy = () => {
                 +55 (41) 99933-6011
               </a>{' '}
               ou enviando um e-mail para{' '}
-              <a href="mailto:contato@santiesantiimportadora.com.br" className="santi-legal__link">
-                contato@santiesantiimportadora.com.br
+              <a href="mailto:andre@santiesantiimportadora.com.br" className="santi-legal__link">
+                andre@santiesantiimportadora.com.br
               </a>
               . O prazo de resposta é de até 2 (dois) dias úteis.
             </p>
@@ -260,8 +261,8 @@ const PrivacyPolicy = () => {
               remoção/eliminação de seus dados e informações pessoais, relatar eventual uso indevido
               ou exercer qualquer direito previsto na Lei n. 13.709/2018 (Lei Geral de Proteção de
               Dados) entrando em contato por meio do e-mail{' '}
-              <a href="mailto:contato@santiesantiimportadora.com.br" className="santi-legal__link">
-                contato@santiesantiimportadora.com.br
+              <a href="mailto:andre@santiesantiimportadora.com.br" className="santi-legal__link">
+                andre@santiesantiimportadora.com.br
               </a>
               . O prazo de resposta é de até 2 (dois) dias úteis.
             </p>
@@ -366,13 +367,16 @@ const PrivacyPolicy = () => {
       </main>
 
       <footer className="santi-footer">
-        <span>
-          © {new Date().getFullYear()} Santi &amp; Santi Importadora e Distribuidora
-        </span>
-        <div className="santi-footer__links">
-          <Link to="/privacidade">Privacidade</Link>
+        <div className="santi-footer__row">
+          <span>
+            © {new Date().getFullYear()} Santi &amp; Santi Importadora e Distribuidora
+          </span>
+          <div className="santi-footer__links">
+            <Link to="/privacidade">Privacidade</Link>
+          </div>
+          <FooterSocial />
         </div>
-        <FooterSocial />
+        <FooterKankaLogo />
       </footer>
     </div>
   );

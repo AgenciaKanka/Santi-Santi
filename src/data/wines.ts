@@ -25,6 +25,27 @@ export function winePublicImageSrc(fileName: string): string {
   return `${prefix}${encodeURIComponent(trimmed)}`;
 }
 
+/** Nome do país na ficha (coluna País) → código ISO 3166-1 alpha-2 para bandeira */
+const WINE_COUNTRY_NAME_TO_ISO: Record<string, string> = {
+  Argentina: 'ar',
+  Portugal: 'pt',
+};
+
+/** Origem do vinho a partir da ficha técnica — usado p.ex. para bandeira no card */
+export function wineCountryFromRows(wine: WineProduct): { iso: string; name: string } | null {
+  const row = wine.rows.find(([k]) => k === 'País');
+  if (!row) return null;
+  const name = row[1].trim();
+  const iso = WINE_COUNTRY_NAME_TO_ISO[name];
+  if (!iso) return null;
+  return { iso, name };
+}
+
+export function wineFlagImageSrc(iso: string, width = 40): string {
+  const code = iso.toLowerCase();
+  return `https://flagcdn.com/w${width}/${code}.png`;
+}
+
 export const FILTERS = [
   { id: 'todos', label: 'Todos' },
   { id: 'tinto', label: 'Tintos' },

@@ -1,8 +1,15 @@
 import type { CSSProperties, FormEvent } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FooterKankaLogo } from '../components/FooterKanka';
 import { FooterSocial } from '../components/FooterSocial';
-import { FILTERS, WINES, winePublicImageSrc } from '../data/wines';
+import {
+  FILTERS,
+  WINES,
+  wineCountryFromRows,
+  wineFlagImageSrc,
+  winePublicImageSrc,
+} from '../data/wines';
 import './santi-home.css';
 
 const base = import.meta.env.BASE_URL || '/';
@@ -135,11 +142,6 @@ const Home = () => {
             <h1 className="santi-title">
               Vinhos selecionados com <em>alma</em> e precisão.
             </h1>
-            <p className="santi-hero__desc">
-              Curadoria entre Mendoza e Portugal, logística impecável e
-              parceria próxima com quem valoriza o detalhe — do portfólio ao
-              copo.
-            </p>
             <div className="santi-hero__actions">
               <a className="santi-btn santi-btn--primary" href="#contato">
                 Fale conosco
@@ -184,17 +186,22 @@ const Home = () => {
           <div className="santi-about__text">
             <p className="santi-eyebrow">Sobre nós</p>
             <h2 className="santi-title">
-              Importação com <em>disciplina</em> e sensibilidade.
+              Uma família entre dois <em>mundos</em>.
             </h2>
             <p>
-              A Santi &amp; Santi nasceu da vontade de aproximar rótulos
-              autênticos do mercado brasileiro, com transparência na cadeia e
-              respeito ao produtor.
+              Curadoria entre o Novo e o Velho Mundo, logística impecável e
+              parceria próxima com quem valoriza o detalhe. Do portfólio à taça.
             </p>
             <p>
-              Trabalhamos com marcas que traduzem terroir e consistência —
-              desde labels icônicos até edições que merecem destaque em carta e
-              adega.
+              A Santi &amp; Santi Importadora nasceu do sonho de uma família de
+              origem italiana no sul do Brasil. Carregando a essência do
+              encontro entre o Velho e o Novo Mundo. Valorizando tradições
+              enquanto busca constante evolução e excelência.
+            </p>
+            <p>
+              Cruzando fronteiras em busca de experiências únicas. Levando à
+              mesa dos brasileiros vinhos que entregam qualidade, histórias e
+              celebração da vida.
             </p>
             <div className="santi-stats">
               <div>
@@ -312,6 +319,7 @@ const Home = () => {
             {WINES.map((p) => {
               const hidden =
                 visibleIds !== null && !visibleIds.has(p.id);
+              const origin = wineCountryFromRows(p);
               return (
                 <Link
                   key={p.id}
@@ -321,16 +329,30 @@ const Home = () => {
                 >
                   <div className="santi-card__top">
                     <span className="santi-card__tag">{p.tag}</span>
-                    <div
-                      className="santi-card__stars"
-                      role="img"
-                      aria-label="Avaliação: 5 de 5 estrelas"
-                    >
-                      {[0, 1, 2, 3, 4].map((i) => (
-                        <span key={i} className="santi-card__star" aria-hidden>
-                          ★
-                        </span>
-                      ))}
+                    <div className="santi-card__rating">
+                      <div
+                        className="santi-card__stars"
+                        role="img"
+                        aria-label="Avaliação: 5 de 5 estrelas"
+                      >
+                        {[0, 1, 2, 3, 4].map((i) => (
+                          <span key={i} className="santi-card__star" aria-hidden>
+                            ★
+                          </span>
+                        ))}
+                      </div>
+                      {origin ? (
+                        <img
+                          className="santi-card__flag"
+                          src={wineFlagImageSrc(origin.iso)}
+                          alt=""
+                          title={`Origem: ${origin.name}`}
+                          width={22}
+                          height={16}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      ) : null}
                     </div>
                   </div>
                   <div
@@ -391,7 +413,7 @@ const Home = () => {
             </h2>
             <p>
               Equipe comercial pronta para atender importadores, distribuidores
-              e canais HORECA com propostas sob medida.
+              e canais de hotéis, restaurantes e cafés com propostas sob medida.
             </p>
             <div className="santi-info-list">
               <div className="santi-info-item">
@@ -400,12 +422,25 @@ const Home = () => {
                 </span>
                 <div>
                   <strong>E-mail</strong>
-                  <span>contato@santiesanti.com.br</span>
+                  <a href="mailto:andre@santiesantiimportadora.com.br">
+                    andre@santiesantiimportadora.com.br
+                  </a>
                 </div>
               </div>
               <div className="santi-info-item">
                 <span className="santi-info-item__icon" aria-hidden>
-                  ◎
+                  <svg
+                    className="santi-info-item__svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M12 7v5l3.5 2" />
+                  </svg>
                 </span>
                 <div>
                   <strong>Atendimento</strong>
@@ -414,7 +449,20 @@ const Home = () => {
               </div>
               <div className="santi-info-item">
                 <span className="santi-info-item__icon" aria-hidden>
-                  ◈
+                  <svg
+                    className="santi-info-item__svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M2 8h11v9H2V8z" />
+                    <path d="M13 12h4l3 3v2h-7" />
+                    <circle cx="6.5" cy="19" r="2" />
+                    <circle cx="17" cy="19" r="2" />
+                  </svg>
                 </span>
                 <div>
                   <strong>Logística</strong>
@@ -498,14 +546,17 @@ const Home = () => {
       </section>
 
       <footer className="santi-footer">
-        <span>
-          © {new Date().getFullYear()} Santi &amp; Santi Importadora e
-          Distribuidora
-        </span>
-        <div className="santi-footer__links">
-          <Link to="/privacidade">Privacidade</Link>
+        <div className="santi-footer__row">
+          <span>
+            © {new Date().getFullYear()} Santi &amp; Santi Importadora e
+            Distribuidora
+          </span>
+          <div className="santi-footer__links">
+            <Link to="/privacidade">Privacidade</Link>
+          </div>
+          <FooterSocial />
         </div>
-        <FooterSocial />
+        <FooterKankaLogo />
       </footer>
     </div>
   );
