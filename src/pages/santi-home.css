@@ -1373,6 +1373,7 @@
 .santi-footer__links {
   display: flex;
   gap: 24px;
+  margin-left: 28px;
 }
 
 .santi-footer__links a:hover {
@@ -1550,6 +1551,7 @@
   .santi-footer__links {
     flex-wrap: wrap;
     justify-content: center;
+    margin-left: 0;
   }
 
   .santi-footer__kanka {
