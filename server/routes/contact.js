@@ -3,7 +3,7 @@ import { sendMail } from '../utils/mailer.js';
 
 const router = express.Router();
 
-const CONTACT_TO = process.env.CONTACT_TO || 'sergio@kanka.com.br';
+const CONTACT_TO = process.env.CONTACT_TO || 'andre@santiesantiimportadora.com.br';
 
 const MAX = {
   nome: 200,
