@@ -39,11 +39,11 @@ jobs:
               RewriteEngine On
                   RewriteBase __APP_PATH__/
 
-              # 1. Requisições da API vão para o Node.js
-              RewriteRule ^api/(.*)$ http://127.0.0.1:3001/api/$1 [P,L]
+              # 1. Requisições da API vão para o Node.js (PORT no server/.env, ex.: 3002)
+              RewriteRule ^api/(.*)$ http://127.0.0.1:3002/api/$1 [P,L]
 
               # 2. Requisições de uploads vão para o Node.js
-              RewriteRule ^uploads/(.*)$ http://127.0.0.1:3001/uploads/$1 [P,L]
+              RewriteRule ^uploads/(.*)$ http://127.0.0.1:3002/uploads/$1 [P,L]
 
               # 3. Impede loop infinito
               RewriteCond %{ENV:REDIRECT_STATUS} 200
