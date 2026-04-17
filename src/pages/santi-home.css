@@ -1386,17 +1386,6 @@
   line-height: 1.45;
 }
 
-.santi-modal__form .santi-form__note {
-  margin-top: 4px;
-}
-
-.santi-modal__note code.santi-modal__slug {
-  font-size: 10px;
-  letter-spacing: 0.04em;
-  color: var(--gold-light);
-  word-break: break-all;
-}
-
 .santi-modal__actions {
   display: flex;
   gap: 12px;

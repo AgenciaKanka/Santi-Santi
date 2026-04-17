@@ -55,8 +55,6 @@ const WineDetail = () => {
     const email = String(fd.get('email') ?? '').trim();
     const telefone = String(fd.get('telefone') ?? '').trim();
     const quantidade = String(fd.get('quantidade') ?? '').trim();
-    const pageUrl =
-      typeof window !== 'undefined' ? window.location.href : '';
 
     setRequestSubmit('loading');
     setRequestFeedback('');
@@ -72,8 +70,6 @@ const WineDetail = () => {
           telefone,
           quantidade,
           vinhoNome: wine.name,
-          vinhoSlug: wine.slug,
-          pageUrl,
         }),
       });
       let data: { ok?: boolean; message?: string } = {};
@@ -307,11 +303,6 @@ const WineDetail = () => {
                   />
                 </div>
               </div>
-              <p className="santi-form__note santi-modal__note">
-                Os dados referem-se ao vinho desta página (
-                <code className="santi-modal__slug">/vinho/{wine.slug}</code>
-                ).
-              </p>
               {requestFeedback ? (
                 <p
                   className={`santi-form__feedback${requestSubmit === 'success' ? ' santi-form__feedback--success' : ''}${requestSubmit === 'error' ? ' santi-form__feedback--error' : ''}`}
